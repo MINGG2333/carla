@@ -57,6 +57,8 @@ public class CarlaTools : ModuleRules
 				"Slate",
 				"SlateCore",
 				"UnrealEd",
+        "OmniverseUSD",
+        "OmniverseRuntime",
 				"Blutility",
 				"UMG",
 				"EditorScriptingUtilities",
