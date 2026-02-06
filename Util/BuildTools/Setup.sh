@@ -636,7 +636,7 @@ cp ${SQLITE_LIB} ${LIBCARLA_INSTALL_CLIENT_FOLDER}/lib/
 # -- Get and compile PROJ ------------------------------------------------------
 # ==============================================================================
 
-PROJ_VERSION=proj-7.2.1
+PROJ_VERSION=proj-9.3.0
 PROJ_REPO=https://download.osgeo.org/proj/${PROJ_VERSION}.tar.gz
 
 PROJ_TAR=${PROJ_VERSION}.tar.gz
@@ -661,7 +661,7 @@ else
   pushd ${PROJ_SRC_DIR}/build >/dev/null
 
   cmake -G "Ninja" .. \
-      -DCMAKE_CXX_FLAGS="-std=c++14 -fPIC" \
+      -DCMAKE_CXX_FLAGS="-std=c++14 -fPIC -include cstdint" \
       -DSQLITE3_INCLUDE_DIR=${SQLITE_INCLUDE_DIR} -DSQLITE3_LIBRARY=${SQLITE_LIB} \
       -DEXE_SQLITE3=${SQLITE_EXE} \
       -DENABLE_TIFF=OFF -DENABLE_CURL=OFF -DBUILD_SHARED_LIBS=OFF -DBUILD_PROJSYNC=OFF \

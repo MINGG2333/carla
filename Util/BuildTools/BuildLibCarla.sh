@@ -179,6 +179,7 @@ function build_libcarla {
         -DCMAKE_TOOLCHAIN_FILE=${M_TOOLCHAIN} \
         -DCMAKE_INSTALL_PREFIX=${M_INSTALL_FOLDER} \
         -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
+        -DCMAKE_CXX_FLAGS="-include cstdint" \
         ${CMAKE_EXTRA_OPTIONS} \
         ${CARLA_ROOT_FOLDER}
 
