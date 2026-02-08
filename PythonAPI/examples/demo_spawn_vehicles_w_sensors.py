@@ -643,7 +643,7 @@ def run_demo(args, client):
             {
                 'type': 'LiDAR',
                 'transform': carla.Transform(carla.Location(x=0, z=2.4)),
-                'options': {'channels': '32', 'range': '50', 'points_per_second': '50000', 'rotation_frequency': '10'},
+                'options': {'channels': '32', 'range': '50', 'points_per_second': '100000', 'rotation_frequency': '20'},
                 'position': 'Roof'
             }
         ]
@@ -860,8 +860,8 @@ def main():
     argparser.add_argument(
         '--vehicles',
         type=int,
-        default=2,
-        help='Number of vehicles to spawn (default: 2)')
+        default=4,
+        help='Number of vehicles to spawn (default: 4)')
     argparser.add_argument(
         '--tm-port',
         metavar='P',
