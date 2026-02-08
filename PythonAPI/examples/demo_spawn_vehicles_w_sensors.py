@@ -3,7 +3,6 @@
 import glob
 import os
 import sys
-import math  # 添加math模块用于计算角度
 
 try:
     sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
@@ -94,11 +93,9 @@ def spawn_vehicles_around_junction(world, vehicle_count=3, radius=25.0):
             vehicle = world.spawn_actor(vehicle_bp, spawn_transform)
             vehicles.append(vehicle)
             
-            distance_to_center = spawn_location.distance(center_location)
             print(f"Vehicle {i+1} spawned:")
             print(f"  Location: {spawn_location}")
-            print(f"  Distance to junction center: {distance_to_center:.2f}m")
-            print(f"  Direction to center: yaw={yaw:.1f}°")
+            print(f"  Rotation: {spawn_rotation}")
             
         except Exception as e:
             print(f"Failed to spawn vehicle {i+1}: {e}")
@@ -454,11 +451,11 @@ def run_demo(args, client):
     camera_max_height = 100.0  # 最大相机高度
     camera_height_step = 5.0  # 相机高度调整步长
     
-    try:
-        # 获取世界
-        world = client.get_world()
-        original_settings = world.get_settings()
+    # 获取世界
+    world = client.get_world()
+    original_settings = world.get_settings()
         
+    try:
         # 设置同步模式
         if args.sync:
             traffic_manager = client.get_trafficmanager(args.tm_port)
