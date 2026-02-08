@@ -1,0 +1,363 @@
+(parallel_ads_testing) mingg@mingg-ubuntu-office:/mnt/zhitainew/ParallelCarla/CARLA_0.9.14/Unreal/CarlaUE4$ tree ./Source
+./Source
+├── CarlaUE4
+│   ├── CarlaUE4.Build.cs
+│   ├── CarlaUE4.cpp
+│   └── CarlaUE4.h
+├── CarlaUE4Editor.Target.cs
+└── CarlaUE4.Target.cs
+
+1 directory, 5 files
+(parallel_ads_testing) mingg@mingg-ubuntu-office:/mnt/zhitainew/ParallelCarla/CARLA_0.9.14/Unreal/CarlaUE4$ tree ./Plugins/Carla/Source
+./Plugins/Carla/Source
+└── Carla
+    ├── Actor
+    │   ├── ActorAttribute.h
+    │   ├── ActorBlueprintFunctionLibrary.cpp
+    │   ├── ActorBlueprintFunctionLibrary.h
+    │   ├── ActorData.cpp
+    │   ├── ActorData.h
+    │   ├── ActorDefinition.h
+    │   ├── ActorDescription.h
+    │   ├── ActorDispatcher.cpp
+    │   ├── ActorDispatcher.h
+    │   ├── ActorInfo.h
+    │   ├── ActorRegistry.cpp
+    │   ├── ActorRegistry.h
+    │   ├── ActorSpawnResult.cpp
+    │   ├── ActorSpawnResult.h
+    │   ├── CarlaActor.cpp
+    │   ├── CarlaActorFactoryBlueprint.h
+    │   ├── CarlaActorFactory.h
+    │   ├── CarlaActor.h
+    │   ├── CarlaBlueprintRegistry.cpp
+    │   ├── CarlaBlueprintRegistry.h
+    │   ├── PedestrianParameters.h
+    │   ├── PropParameters.h
+    │   ├── StaticMeshFactory.cpp
+    │   ├── StaticMeshFactory.h
+    │   └── VehicleParameters.h
+    ├── AI
+    │   ├── AIControllerFactory.cpp
+    │   ├── AIControllerFactory.h
+    │   └── WalkerAIController.h
+    ├── Carla.Build.cs
+    ├── Carla.cpp
+    ├── Carla.h
+    ├── CityMapGenerator.cpp
+    ├── CityMapGenerator.h
+    ├── Commandlet
+    │   ├── LoadAssetMaterialsCommandlet.cpp
+    │   ├── LoadAssetMaterialsCommandlet.h
+    │   ├── MoveAssetsCommandlet.cpp
+    │   ├── MoveAssetsCommandlet.h
+    │   ├── PrepareAssetsForCookingCommandlet.cpp
+    │   └── PrepareAssetsForCookingCommandlet.h
+    ├── Game
+    │   ├── CarlaEngine.cpp
+    │   ├── CarlaEngine.h
+    │   ├── CarlaEpisode.cpp
+    │   ├── CarlaEpisode.h
+    │   ├── CarlaGameInstance.cpp
+    │   ├── CarlaGameInstance.h
+    │   ├── CarlaGameModeBase.cpp
+    │   ├── CarlaGameModeBase.h
+    │   ├── CarlaHUD.cpp
+    │   ├── CarlaHUD.h
+    │   ├── CarlaStaticDelegates.cpp
+    │   ├── CarlaStaticDelegates.h
+    │   ├── CarlaStatics.cpp
+    │   ├── CarlaStatics.h
+    │   ├── FrameData.cpp
+    │   ├── FrameData.h
+    │   ├── TaggedComponent.cpp
+    │   ├── TaggedComponent.h
+    │   ├── Tagger.cpp
+    │   ├── TaggerDelegate.cpp
+    │   ├── TaggerDelegate.h
+    │   └── Tagger.h
+    ├── Lights
+    │   ├── CarlaLight.cpp
+    │   ├── CarlaLight.h
+    │   ├── CarlaLightSubsystem.cpp
+    │   └── CarlaLightSubsystem.h
+    ├── MapGen
+    │   ├── CityAreaDescription.h
+    │   ├── CityMapDefinitions.h
+    │   ├── CityMapMeshHolder.cpp
+    │   ├── CityMapMeshHolder.h
+    │   ├── CityMapMeshTag.cpp
+    │   ├── CityMapMeshTag.h
+    │   ├── DoublyConnectedEdgeList.cpp
+    │   ├── DoublyConnectedEdgeList.h
+    │   ├── GraphGenerator.cpp
+    │   ├── GraphGenerator.h
+    │   ├── GraphParser.cpp
+    │   ├── GraphParser.h
+    │   ├── GraphTypes.cpp
+    │   ├── GraphTypes.h
+    │   ├── LargeMapManager.cpp
+    │   ├── LargeMapManager.h
+    │   ├── Position.h
+    │   ├── ProceduralBuilding.cpp
+    │   ├── ProceduralBuilding.h
+    │   ├── RoadMap.cpp
+    │   ├── RoadMap.h
+    │   ├── RoadSegmentDescription.h
+    │   ├── SoilTypeManager.cpp
+    │   ├── SoilTypeManager.h
+    │   ├── StaticMeshCollection.cpp
+    │   ├── StaticMeshCollection.h
+    │   ├── UncenteredPivotPointMesh.cpp
+    │   └── UncenteredPivotPointMesh.h
+    ├── Math
+    │   └── DVector.h
+    ├── OpenDrive
+    │   ├── OpenDriveActor.cpp
+    │   ├── OpenDriveActor.h
+    │   ├── OpenDrive.cpp
+    │   ├── OpenDriveGenerator.cpp
+    │   ├── OpenDriveGenerator.h
+    │   ├── OpenDrive.h
+    │   ├── OpenDriveMap.cpp
+    │   └── OpenDriveMap.h
+    ├── Recorder
+    │   ├── CarlaRecorderAnimVehicle.cpp
+    │   ├── CarlaRecorderAnimVehicle.h
+    │   ├── CarlaRecorderAnimWalker.cpp
+    │   ├── CarlaRecorderAnimWalker.h
+    │   ├── CarlaRecorderBoundingBox.cpp
+    │   ├── CarlaRecorderBoundingBox.h
+    │   ├── CarlaRecorderCollision.cpp
+    │   ├── CarlaRecorderCollision.h
+    │   ├── CarlaRecorder.cpp
+    │   ├── CarlaRecorderEventAdd.cpp
+    │   ├── CarlaRecorderEventAdd.h
+    │   ├── CarlaRecorderEventDel.cpp
+    │   ├── CarlaRecorderEventDel.h
+    │   ├── CarlaRecorderEventParent.cpp
+    │   ├── CarlaRecorderEventParent.h
+    │   ├── CarlaRecorderFrameCounter.cpp
+    │   ├── CarlaRecorderFrameCounter.h
+    │   ├── CarlaRecorderFrames.cpp
+    │   ├── CarlaRecorderFrames.h
+    │   ├── CarlaRecorder.h
+    │   ├── CarlaRecorderHelpers.cpp
+    │   ├── CarlaRecorderHelpers.h
+    │   ├── CarlaRecorderInfo.h
+    │   ├── CarlaRecorderKinematics.cpp
+    │   ├── CarlaRecorderKinematics.h
+    │   ├── CarlaRecorderLightScene.cpp
+    │   ├── CarlaRecorderLightScene.h
+    │   ├── CarlaRecorderLightVehicle.cpp
+    │   ├── CarlaRecorderLightVehicle.h
+    │   ├── CarlaRecorderPhysicsControl.cpp
+    │   ├── CarlaRecorderPhysicsControl.h
+    │   ├── CarlaRecorderPlatformTime.cpp
+    │   ├── CarlaRecorderPlatformTime.h
+    │   ├── CarlaRecorderPosition.cpp
+    │   ├── CarlaRecorderPosition.h
+    │   ├── CarlaRecorderQuery.cpp
+    │   ├── CarlaRecorderQuery.h
+    │   ├── CarlaRecorderState.cpp
+    │   ├── CarlaRecorderState.h
+    │   ├── CarlaRecorderTraficLightTime.cpp
+    │   ├── CarlaRecorderTraficLightTime.h
+    │   ├── CarlaRecorderVisualTime.cpp
+    │   ├── CarlaRecorderVisualTime.h
+    │   ├── CarlaRecorderWalkerBones.cpp
+    │   ├── CarlaRecorderWalkerBones.h
+    │   ├── CarlaReplayer.cpp
+    │   ├── CarlaReplayer.h
+    │   ├── CarlaReplayerHelper.cpp
+    │   └── CarlaReplayerHelper.h
+    ├── Sensor
+    │   ├── AsyncDataStream.cpp
+    │   ├── AsyncDataStream.h
+    │   ├── CollisionSensor.cpp
+    │   ├── CollisionSensor.h
+    │   ├── DataStream.h
+    │   ├── DepthCamera.cpp
+    │   ├── DepthCamera.h
+    │   ├── DVSCamera.cpp
+    │   ├── DVSCamera.h
+    │   ├── GnssSensor.cpp
+    │   ├── GnssSensor.h
+    │   ├── ImageUtil.cpp
+    │   ├── ImageUtil.h
+    │   ├── InertialMeasurementUnit.cpp
+    │   ├── InertialMeasurementUnit.h
+    │   ├── InstanceSegmentationCamera.cpp
+    │   ├── InstanceSegmentationCamera.h
+    │   ├── LaneInvasionSensor.cpp
+    │   ├── LaneInvasionSensor.h
+    │   ├── LidarDescription.h
+    │   ├── NormalsCamera.cpp
+    │   ├── NormalsCamera.h
+    │   ├── ObstacleDetectionSensor.cpp
+    │   ├── ObstacleDetectionSensor.h
+    │   ├── OpticalFlowCamera.cpp
+    │   ├── OpticalFlowCamera.h
+    │   ├── PixelReader.cpp
+    │   ├── PixelReader.h
+    │   ├── Radar.cpp
+    │   ├── Radar.h
+    │   ├── RayCastLidar.cpp
+    │   ├── RayCastLidar.h
+    │   ├── RayCastSemanticLidar.cpp
+    │   ├── RayCastSemanticLidar.h
+    │   ├── RssSensor.cpp
+    │   ├── RssSensor.h
+    │   ├── SceneCaptureCamera.cpp
+    │   ├── SceneCaptureCamera.h
+    │   ├── SceneCaptureSensor.cpp
+    │   ├── SceneCaptureSensor.h
+    │   ├── SemanticSegmentationCamera.cpp
+    │   ├── SemanticSegmentationCamera.h
+    │   ├── Sensor.cpp
+    │   ├── SensorFactory.cpp
+    │   ├── SensorFactory.h
+    │   ├── Sensor.h
+    │   ├── SensorManager.cpp
+    │   ├── SensorManager.h
+    │   ├── ShaderBasedSensor.cpp
+    │   ├── ShaderBasedSensor.h
+    │   ├── UE4_Overridden
+    │   │   ├── SceneCaptureComponent2D_CARLA.cpp
+    │   │   ├── SceneCaptureComponent2D_CARLA.h
+    │   │   ├── SceneCaptureComponent_CARLA.cpp
+    │   │   ├── SceneCaptureComponent_CARLA.h
+    │   │   ├── SceneCaptureComponentCube_CARLA.cpp
+    │   │   └── SceneCaptureComponentCube_CARLA.h
+    │   ├── WorldObserver.cpp
+    │   └── WorldObserver.h
+    ├── Server
+    │   ├── CarlaServer.cpp
+    │   ├── CarlaServer.h
+    │   ├── CarlaServerResponse.cpp
+    │   └── CarlaServerResponse.h
+    ├── Settings
+    │   ├── CarlaSettings.cpp
+    │   ├── CarlaSettingsDelegate.cpp
+    │   ├── CarlaSettingsDelegate.h
+    │   ├── CarlaSettings.h
+    │   ├── EpisodeSettings.h
+    │   └── QualityLevelUE.h
+    ├── Traffic
+    │   ├── RoutePlanner.cpp
+    │   ├── RoutePlanner.h
+    │   ├── SignComponent.cpp
+    │   ├── SignComponent.h
+    │   ├── SpeedLimitComponent.cpp
+    │   ├── SpeedLimitComponent.h
+    │   ├── StopSignComponent.cpp
+    │   ├── StopSignComponent.h
+    │   ├── TrafficLightBase.cpp
+    │   ├── TrafficLightBase.h
+    │   ├── TrafficLightComponent.cpp
+    │   ├── TrafficLightComponent.h
+    │   ├── TrafficLightController.cpp
+    │   ├── TrafficLightController.h
+    │   ├── TrafficLightGroup.cpp
+    │   ├── TrafficLightGroup.h
+    │   ├── TrafficLightInterface.h
+    │   ├── TrafficLightManager.cpp
+    │   ├── TrafficLightManager.h
+    │   ├── TrafficLightState.h
+    │   ├── TrafficSignBase.cpp
+    │   ├── TrafficSignBase.h
+    │   ├── YieldSignComponent.cpp
+    │   └── YieldSignComponent.h
+    ├── Trigger
+    │   ├── FrictionTrigger.cpp
+    │   ├── FrictionTrigger.h
+    │   ├── TriggerFactory.cpp
+    │   └── TriggerFactory.h
+    ├── Util
+    │   ├── ActorAttacher.cpp
+    │   ├── ActorAttacher.h
+    │   ├── ActorWithRandomEngine.cpp
+    │   ├── ActorWithRandomEngine.h
+    │   ├── BoundingBoxCalculator.cpp
+    │   ├── BoundingBoxCalculator.h
+    │   ├── BoundingBox.h
+    │   ├── DebugShapeDrawer.cpp
+    │   ├── DebugShapeDrawer.h
+    │   ├── EmptyActor.cpp
+    │   ├── EmptyActor.h
+    │   ├── EnvironmentObject.h
+    │   ├── IniFile.h
+    │   ├── ListView.h
+    │   ├── NavigationMesh.cpp
+    │   ├── NavigationMesh.h
+    │   ├── NonCopyable.h
+    │   ├── NoWorldOffsetSceneComponent.cpp
+    │   ├── NoWorldOffsetSceneComponent.h
+    │   ├── ObjectRegister.cpp
+    │   ├── ObjectRegister.h
+    │   ├── ProceduralCustomMesh.h
+    │   ├── RandomEngine.cpp
+    │   ├── RandomEngine.h
+    │   ├── RayTracer.cpp
+    │   ├── RayTracer.h
+    │   ├── RoadPainterWrapper.cpp
+    │   ├── RoadPainterWrapper.h
+    │   └── ScopedStack.h
+    ├── Vegetation
+    │   ├── BaseVegetationActor.cpp
+    │   ├── BaseVegetationActor.h
+    │   ├── SpringBasedVegetationComponent.cpp
+    │   ├── SpringBasedVegetationComponent.h
+    │   ├── VegetationManager.cpp
+    │   └── VegetationManager.h
+    ├── Vehicle
+    │   ├── AckermannController.cpp
+    │   ├── AckermannController.h
+    │   ├── AckermannControllerSettings.h
+    │   ├── CarlaWheeledVehicle.cpp
+    │   ├── CarlaWheeledVehicle.h
+    │   ├── CarlaWheeledVehicleNW.cpp
+    │   ├── CarlaWheeledVehicleNW.h
+    │   ├── CarlaWheeledVehicleState.h
+    │   ├── CustomTerrainPhysicsComponent.cpp
+    │   ├── CustomTerrainPhysicsComponent.h
+    │   ├── MovementComponents
+    │   │   ├── BaseCarlaMovementComponent.cpp
+    │   │   ├── BaseCarlaMovementComponent.h
+    │   │   ├── CarSimManagerComponent.cpp
+    │   │   ├── CarSimManagerComponent.h
+    │   │   ├── ChronoMovementComponent.cpp
+    │   │   ├── ChronoMovementComponent.h
+    │   │   ├── DefaultMovementComponent.cpp
+    │   │   └── DefaultMovementComponent.h
+    │   ├── VehicleAckermannControl.h
+    │   ├── VehicleControl.h
+    │   ├── VehicleInputPriority.h
+    │   ├── VehicleLightState.h
+    │   ├── VehiclePhysicsControl.h
+    │   ├── VehicleSpawnPoint.h
+    │   ├── VehicleVelocityControl.cpp
+    │   ├── VehicleVelocityControl.h
+    │   ├── WheeledVehicleAIController.cpp
+    │   ├── WheeledVehicleAIController.h
+    │   ├── WheeledVehicleMovementComponentNW.cpp
+    │   ├── WheeledVehicleMovementComponentNW.h
+    │   └── WheelPhysicsControl.h
+    ├── Walker
+    │   ├── WalkerAnim.cpp
+    │   ├── WalkerAnim.h
+    │   ├── WalkerBase.cpp
+    │   ├── WalkerBase.h
+    │   ├── WalkerBoneControlIn.h
+    │   ├── WalkerBoneControlOut.h
+    │   ├── WalkerControl.h
+    │   ├── WalkerController.cpp
+    │   ├── WalkerController.h
+    │   └── WalkerSpawnPoint.h
+    └── Weather
+        ├── Weather.cpp
+        ├── Weather.h
+        └── WeatherParameters.h
+
+22 directories, 326 files
+(parallel_ads_testing) mingg@mingg-ubuntu-office:/mnt/zhitainew/ParallelCarla/CARLA_0.9.14/Unreal/CarlaUE4$ 
