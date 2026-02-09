@@ -55,3 +55,25 @@ void FParallelWorldUtils::SetupComponentCollisionForWorld(
         ECR_Block
     );
 }
+
+EParallelCollisionChannel FParallelWorldUtils::WorldIDToCollisionChannel(int32 WorldID)
+{
+    // 简单的映射：WorldID 0-3 对应 PCC_World0-PCC_World3
+    switch (WorldID)
+    {
+        case 0: return EParallelCollisionChannel::PCC_World0;
+        case 1: return EParallelCollisionChannel::PCC_World1;
+        case 2: return EParallelCollisionChannel::PCC_World2;
+        case 3: return EParallelCollisionChannel::PCC_World3;
+        default:
+            // 超出范围的ID使用World0
+            return EParallelCollisionChannel::PCC_World0;
+    }
+}
+
+uint32 FParallelWorldUtils::WorldIDToRenderLayerMask(int32 WorldID)
+{
+    // 这个函数其实和 GetRenderLayerMaskForWorld 功能相同
+    // 为了保持一致性，我们调用已有的函数
+    return GetRenderLayerMaskForWorld(WorldID);
+}

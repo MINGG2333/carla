@@ -66,7 +66,7 @@ public:
         int32 WorldID
     );
     
-    // 转换WorldID到碰撞通道
+    // 转换WorldID到碰撞通道枚举值
     static EParallelCollisionChannel WorldIDToCollisionChannel(int32 WorldID);
     
     // 转换WorldID到渲染层掩码
