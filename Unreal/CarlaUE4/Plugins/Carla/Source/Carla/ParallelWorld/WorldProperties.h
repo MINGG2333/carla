@@ -1,53 +1,74 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/WorldProperties.h
+
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"  // 因为UWorldProperties继承自UObject
-#include "Engine/EngineTypes.h"     // 用于ECollisionChannel等
+#include "GameFramework/Actor.h"
 #include "WorldProperties.generated.h"
 
+// 为每个世界分配一个碰撞通道，最多支持8个平行世界
+// 注意：UE4最多支持62个自定义碰撞通道，我们从中分配一部分给平行世界
 UENUM(BlueprintType)
-enum class EWorldCollisionChannel : uint8
+enum class EParallelCollisionChannel : uint8
 {
-    World0 UMETA(DisplayName = "World 0"),
-    World1 UMETA(DisplayName = "World 1"),
-    World2 UMETA(DisplayName = "World 2"),
-    // ... 最多支持32个世界（UE4碰撞通道限制）
-    Shared UMETA(DisplayName = "Shared Objects")
+    PCC_World0 UMETA(DisplayName = "World 0 (Default)"),
+    PCC_World1 UMETA(DisplayName = "World 1"),
+    PCC_World2 UMETA(DisplayName = "World 2"),
+    PCC_World3 UMETA(DisplayName = "World 3"),
+    PCC_Shared UMETA(DisplayName = "Shared Objects")
 };
 
-UCLASS()
-class CARLA_API UWorldProperties : public UObject
+// 世界渲染层，使用位掩码实现
+struct FParallelRenderLayer
 {
-    GENERATED_BODY()
-    
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Parallel World")
+    static constexpr uint32 World0 = 1 << 0;
+    static constexpr uint32 World1 = 1 << 1;
+    static constexpr uint32 World2 = 1 << 2;
+    static constexpr uint32 World3 = 1 << 3;
+    static constexpr uint32 Shared = 1 << 4;
+};
+
+// 轻量级的世界属性结构体，不继承UObject以简化
+struct FWorldProperties
+{
+    // 世界ID
     int32 WorldID = 0;
     
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Parallel World")
+    // 世界名称
     FString WorldName = TEXT("DefaultWorld");
     
     // 物理碰撞相关
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Physics")
-    EWorldCollisionChannel CollisionChannel = EWorldCollisionChannel::World0;
+    EParallelCollisionChannel CollisionChannel = EParallelCollisionChannel::PCC_World0;
     
     // 渲染相关
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Rendering")
-    int32 RenderLayerMask = 1; // 位掩码
+    uint32 RenderLayerMask = FParallelRenderLayer::World0;
     
-    // 静态函数：获取碰撞响应设置
-    static void SetupCollisionResponseForWorld(
+    // 是否为默认世界
+    bool bIsDefaultWorld = true;
+    
+    // 世界是否激活
+    bool bIsActive = true;
+};
+
+// 工具函数类
+class CARLA_API FParallelWorldUtils
+{
+public:
+    // 获取世界的碰撞通道
+    static ECollisionChannel GetCollisionChannelForWorld(int32 WorldID);
+    
+    // 获取世界的渲染层掩码
+    static uint32 GetRenderLayerMaskForWorld(int32 WorldID);
+    
+    // 设置组件的碰撞响应
+    static void SetupComponentCollisionForWorld(
         UPrimitiveComponent* Component, 
         int32 WorldID
     );
     
-    // 静态函数：将WorldID转换为碰撞通道
-    static ECollisionChannel GetCollisionChannelForWorld(int32 WorldID);
+    // 转换WorldID到碰撞通道
+    static EParallelCollisionChannel WorldIDToCollisionChannel(int32 WorldID);
     
-    // 静态函数：获取共享世界的碰撞通道
-    static ECollisionChannel GetSharedCollisionChannel();
-    
-    // 静态函数：获取渲染层掩码
-    static int32 GetRenderLayerMaskForWorld(int32 WorldID);
+    // 转换WorldID到渲染层掩码
+    static uint32 WorldIDToRenderLayerMask(int32 WorldID);
 };

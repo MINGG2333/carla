@@ -1,47 +1,44 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/ParallelActorDispatcher.h
+
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Carla/Actor/ActorDispatcher.h"  // 继承自UActorDispatcher
-#include "Carla/ParallelWorld/ParallelCarlaActor.h"  // 使用FParallelCarlaActor
-#include "ParallelActorDispatcher.generated.h"  // UCLASS需要这个
+#include "Carla/Actor/ActorDispatcher.h"
+#include "Carla/ParallelWorld/ParallelWorldManager.h"
 
 /**
- * 扩展UActorDispatcher，添加平行世界支持
- * 通过继承并重写关键方法实现
+ * 扩展ActorDispatcher以支持平行世界
+ * 通过子类化而不是修改原类
  */
-UCLASS()
-class CARLA_API UParallelActorDispatcher : public UActorDispatcher
+class CARLA_API FParallelActorDispatcher
 {
-    GENERATED_BODY()
-    
 public:
-    // 重写SpawnActor，添加WorldID参数
-    virtual TPair<EActorSpawnResultStatus, FCarlaActor*> SpawnActor(
-        const FTransform& Transform,
-        FActorDescription ActorDescription,
-        FCarlaActor::IdType DesiredId = 0,
-        int32 WorldID = 0  // 新增参数
-    ) override;
-    
-    // 新的SpawnActor接口（带有WorldID）
-    UFUNCTION(BlueprintCallable, Category="Parallel World")
-    TPair<EActorSpawnResultStatus, FParallelCarlaActor*> SpawnActorInWorld(
+    // 在指定世界生成Actor
+    static TPair<EActorSpawnResultStatus, FCarlaActor*> SpawnActorInWorld(
+        UActorDispatcher* BaseDispatcher,
         const FTransform& Transform,
         FActorDescription ActorDescription,
         int32 WorldID,
         FCarlaActor::IdType DesiredId = 0
     );
     
-    // 在指定世界生成Actor（蓝图版本）
-    UFUNCTION(BlueprintCallable, Category="Parallel World")
-    AActor* SpawnActorInWorldWithClass(
-        UClass* ActorClass,
-        const FTransform& Transform,
+    // 将现有Actor分配到指定世界
+    static bool AssignActorToWorld(
+        UActorDispatcher* BaseDispatcher,
+        FCarlaActor::IdType ActorId,
         int32 WorldID
     );
     
-    // 注册Actor到世界
-    UFUNCTION(BlueprintCallable, Category="Parallel World")
-    void RegisterActorToWorld(AActor* Actor, FActorDescription Description, int32 WorldID);
+    // 获取Actor所在的世界
+    static int32 GetActorWorldID(FCarlaActor::IdType ActorId);
+    
+    // 批量分配Actor到世界
+    static void BatchAssignActorsToWorld(
+        UActorDispatcher* BaseDispatcher,
+        const TArray<FCarlaActor::IdType>& ActorIds,
+        int32 WorldID
+    );
+    
+private:
+    // 禁止实例化
+    FParallelActorDispatcher() = delete;
 };
