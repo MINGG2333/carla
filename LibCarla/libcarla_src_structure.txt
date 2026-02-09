@@ -1,0 +1,481 @@
+(parallel_ads_testing) mingg@mingg-ubuntu-office:/mnt/zhitainew/ParallelCarla/CARLA_0.9.14$ tree ./LibCarla/source
+./LibCarla/source
+├── carla
+│   ├── AtomicList.h
+│   ├── AtomicSharedPtr.h
+│   ├── Buffer.cpp
+│   ├── Buffer.h
+│   ├── BufferPool.h
+│   ├── client
+│   │   ├── ActorAttribute.cpp
+│   │   ├── ActorAttribute.h
+│   │   ├── ActorBlueprint.cpp
+│   │   ├── ActorBlueprint.h
+│   │   ├── Actor.cpp
+│   │   ├── Actor.h
+│   │   ├── ActorList.cpp
+│   │   ├── ActorList.h
+│   │   ├── ActorSnapshot.h
+│   │   ├── BlueprintLibrary.cpp
+│   │   ├── BlueprintLibrary.h
+│   │   ├── Client.h
+│   │   ├── ClientSideSensor.h
+│   │   ├── DebugHelper.cpp
+│   │   ├── DebugHelper.h
+│   │   ├── detail
+│   │   │   ├── ActorFactory.cpp
+│   │   │   ├── ActorFactory.h
+│   │   │   ├── ActorState.cpp
+│   │   │   ├── ActorState.h
+│   │   │   ├── ActorVariant.cpp
+│   │   │   ├── ActorVariant.h
+│   │   │   ├── CachedActorList.h
+│   │   │   ├── CallbackList.h
+│   │   │   ├── Client.cpp
+│   │   │   ├── Client.h
+│   │   │   ├── Episode.cpp
+│   │   │   ├── Episode.h
+│   │   │   ├── EpisodeProxy.cpp
+│   │   │   ├── EpisodeProxy.h
+│   │   │   ├── EpisodeState.cpp
+│   │   │   ├── EpisodeState.h
+│   │   │   ├── Simulator.cpp
+│   │   │   ├── Simulator.h
+│   │   │   ├── WalkerNavigation.cpp
+│   │   │   └── WalkerNavigation.h
+│   │   ├── FIleTransfer.cpp
+│   │   ├── FileTransfer.h
+│   │   ├── GarbageCollectionPolicy.h
+│   │   ├── Junction.cpp
+│   │   ├── Junction.h
+│   │   ├── Landmark.h
+│   │   ├── LaneInvasionSensor.cpp
+│   │   ├── LaneInvasionSensor.h
+│   │   ├── Light.cpp
+│   │   ├── Light.h
+│   │   ├── LightManager.cpp
+│   │   ├── LightManager.h
+│   │   ├── LightState.h
+│   │   ├── Map.cpp
+│   │   ├── Map.h
+│   │   ├── Sensor.h
+│   │   ├── ServerSideSensor.cpp
+│   │   ├── ServerSideSensor.h
+│   │   ├── TimeoutException.cpp
+│   │   ├── TimeoutException.h
+│   │   ├── Timestamp.h
+│   │   ├── TrafficLight.cpp
+│   │   ├── TrafficLight.h
+│   │   ├── TrafficSign.cpp
+│   │   ├── TrafficSign.h
+│   │   ├── Vehicle.cpp
+│   │   ├── Vehicle.h
+│   │   ├── WalkerAIController.cpp
+│   │   ├── WalkerAIController.h
+│   │   ├── Walker.cpp
+│   │   ├── Walker.h
+│   │   ├── Waypoint.cpp
+│   │   ├── Waypoint.h
+│   │   ├── World.cpp
+│   │   ├── World.h
+│   │   └── WorldSnapshot.h
+│   ├── Debug.h
+│   ├── Exception.cpp
+│   ├── Exception.h
+│   ├── FileSystem.cpp
+│   ├── FileSystem.h
+│   ├── Functional.h
+│   ├── geom
+│   │   ├── BoundingBox.h
+│   │   ├── CubicPolynomial.h
+│   │   ├── GeoLocation.cpp
+│   │   ├── GeoLocation.h
+│   │   ├── Location.h
+│   │   ├── Math.cpp
+│   │   ├── Math.h
+│   │   ├── Mesh.cpp
+│   │   ├── Mesh.h
+│   │   ├── Rotation.h
+│   │   ├── Rtree.h
+│   │   ├── Transform.h
+│   │   ├── Vector2D.h
+│   │   ├── Vector3D.h
+│   │   └── Vector3DInt.h
+│   ├── image
+│   │   ├── BoostGil.h
+│   │   ├── CityScapesPalette.h
+│   │   ├── ColorConverter.h
+│   │   ├── ImageConverter.h
+│   │   ├── ImageIOConfig.h
+│   │   ├── ImageIO.h
+│   │   └── ImageView.h
+│   ├── Iterator.h
+│   ├── ListView.h
+│   ├── Logging.h
+│   ├── Memory.h
+│   ├── MoveHandler.h
+│   ├── MsgPackAdaptors.h
+│   ├── MsgPack.h
+│   ├── multigpu
+│   │   ├── commands.h
+│   │   ├── incomingMessage.h
+│   │   ├── listener.cpp
+│   │   ├── listener.h
+│   │   ├── primaryCommands.cpp
+│   │   ├── primaryCommands.h
+│   │   ├── primary.cpp
+│   │   ├── primary.h
+│   │   ├── router.cpp
+│   │   ├── router.h
+│   │   ├── secondaryCommands.cpp
+│   │   ├── secondaryCommands.h
+│   │   ├── secondary.cpp
+│   │   └── secondary.h
+│   ├── nav
+│   │   ├── Navigation.cpp
+│   │   ├── Navigation.h
+│   │   ├── WalkerEvent.cpp
+│   │   ├── WalkerEvent.h
+│   │   ├── WalkerManager.cpp
+│   │   └── WalkerManager.h
+│   ├── NonCopyable.h
+│   ├── opendrive
+│   │   ├── OpenDriveParser.cpp
+│   │   ├── OpenDriveParser.h
+│   │   └── parser
+│   │       ├── ControllerParser.cpp
+│   │       ├── ControllerParser.h
+│   │       ├── GeometryParser.cpp
+│   │       ├── GeometryParser.h
+│   │       ├── GeoReferenceParser.cpp
+│   │       ├── GeoReferenceParser.h
+│   │       ├── JunctionParser.cpp
+│   │       ├── JunctionParser.h
+│   │       ├── LaneParser.cpp
+│   │       ├── LaneParser.h
+│   │       ├── ObjectParser.cpp
+│   │       ├── ObjectParser.h
+│   │       ├── ProfilesParser.cpp
+│   │       ├── ProfilesParser.h
+│   │       ├── RoadParser.cpp
+│   │       ├── RoadParser.h
+│   │       ├── SignalParser.cpp
+│   │       ├── SignalParser.h
+│   │       ├── TrafficGroupParser.cpp
+│   │       └── TrafficGroupParser.h
+│   ├── Platform.h
+│   ├── pointcloud
+│   │   └── PointCloudIO.h
+│   ├── profiler
+│   │   ├── LifetimeProfiled.cpp
+│   │   ├── LifetimeProfiled.h
+│   │   ├── Profiler.cpp
+│   │   └── Profiler.h
+│   ├── PythonUtil.h
+│   ├── pytorch
+│   │   ├── pytorch.cpp
+│   │   └── pytorch.h
+│   ├── RecurrentSharedFuture.h
+│   ├── road
+│   │   ├── Controller.h
+│   │   ├── element
+│   │   │   ├── Geometry.cpp
+│   │   │   ├── Geometry.h
+│   │   │   ├── LaneCrossingCalculator.cpp
+│   │   │   ├── LaneCrossingCalculator.h
+│   │   │   ├── LaneMarking.cpp
+│   │   │   ├── LaneMarking.h
+│   │   │   ├── RoadInfoCrosswalk.h
+│   │   │   ├── RoadInfoElevation.h
+│   │   │   ├── RoadInfoGeometry.h
+│   │   │   ├── RoadInfo.h
+│   │   │   ├── RoadInfoIterator.h
+│   │   │   ├── RoadInfoLaneAccess.h
+│   │   │   ├── RoadInfoLaneBorder.h
+│   │   │   ├── RoadInfoLaneHeight.h
+│   │   │   ├── RoadInfoLaneMaterial.h
+│   │   │   ├── RoadInfoLaneOffset.h
+│   │   │   ├── RoadInfoLaneRule.h
+│   │   │   ├── RoadInfoLaneVisibility.h
+│   │   │   ├── RoadInfoLaneWidth.h
+│   │   │   ├── RoadInfoMarkRecord.h
+│   │   │   ├── RoadInfoMarkTypeLine.h
+│   │   │   ├── RoadInfoSignal.h
+│   │   │   ├── RoadInfoSpeed.h
+│   │   │   ├── RoadInfoVisitor.h
+│   │   │   ├── Waypoint.cpp
+│   │   │   └── Waypoint.h
+│   │   ├── InformationSet.h
+│   │   ├── Junction.h
+│   │   ├── Lane.cpp
+│   │   ├── Lane.h
+│   │   ├── LaneSection.cpp
+│   │   ├── LaneSection.h
+│   │   ├── LaneSectionMap.h
+│   │   ├── LaneValidity.h
+│   │   ├── MapBuilder.cpp
+│   │   ├── MapBuilder.h
+│   │   ├── Map.cpp
+│   │   ├── MapData.cpp
+│   │   ├── MapData.h
+│   │   ├── Map.h
+│   │   ├── MeshFactory.cpp
+│   │   ├── MeshFactory.h
+│   │   ├── object
+│   │   │   └── RepeatRecord.h
+│   │   ├── Object.h
+│   │   ├── Road.cpp
+│   │   ├── RoadElementSet.h
+│   │   ├── Road.h
+│   │   ├── RoadTypes.h
+│   │   ├── Signal.h
+│   │   ├── SignalType.cpp
+│   │   └── SignalType.h
+│   ├── rpc
+│   │   ├── AckermannControllerSettings.h
+│   │   ├── ActorAttribute.h
+│   │   ├── ActorAttributeType.h
+│   │   ├── ActorDefinition.h
+│   │   ├── ActorDescription.h
+│   │   ├── Actor.h
+│   │   ├── ActorId.h
+│   │   ├── ActorState.h
+│   │   ├── AttachmentType.h
+│   │   ├── BoneTransformDataIn.h
+│   │   ├── BoneTransformDataOut.h
+│   │   ├── Client.h
+│   │   ├── Color.h
+│   │   ├── Command.h
+│   │   ├── CommandResponse.h
+│   │   ├── DebugShape.h
+│   │   ├── EnvironmentObject.h
+│   │   ├── EpisodeInfo.h
+│   │   ├── EpisodeSettings.h
+│   │   ├── FloatColor.h
+│   │   ├── GearPhysicsControl.h
+│   │   ├── LabelledPoint.h
+│   │   ├── LightState.h
+│   │   ├── Location.h
+│   │   ├── MapInfo.h
+│   │   ├── MapLayer.cpp
+│   │   ├── MapLayer.h
+│   │   ├── MaterialParameter.cpp
+│   │   ├── MaterialParameter.h
+│   │   ├── Metadata.h
+│   │   ├── ObjectLabel.h
+│   │   ├── OpendriveGenerationParameters.h
+│   │   ├── QualityLevel.h
+│   │   ├── Response.h
+│   │   ├── Server.h
+│   │   ├── String.h
+│   │   ├── Texture.h
+│   │   ├── TrafficLightState.h
+│   │   ├── Transform.h
+│   │   ├── Vector2D.h
+│   │   ├── Vector3D.h
+│   │   ├── VehicleAckermannControl.h
+│   │   ├── VehicleControl.h
+│   │   ├── VehicleDoor.h
+│   │   ├── VehicleFailureState.h
+│   │   ├── VehicleLightState.h
+│   │   ├── VehicleLightStateList.h
+│   │   ├── VehiclePhysicsControl.h
+│   │   ├── VehicleWheels.h
+│   │   ├── WalkerBoneControlIn.h
+│   │   ├── WalkerBoneControlOut.h
+│   │   ├── WalkerControl.h
+│   │   ├── WeatherParameters.cpp
+│   │   ├── WeatherParameters.h
+│   │   └── WheelPhysicsControl.h
+│   ├── rss
+│   │   ├── RssCheck.cpp
+│   │   ├── RssCheck.h
+│   │   ├── RssRestrictor.cpp
+│   │   ├── RssRestrictor.h
+│   │   ├── RssSensor.cpp
+│   │   └── RssSensor.h
+│   ├── sensor
+│   │   ├── CompileTimeTypeMap.h
+│   │   ├── CompositeSerializer.h
+│   │   ├── data
+│   │   │   ├── ActorDynamicState.h
+│   │   │   ├── Array.h
+│   │   │   ├── CollisionEvent.h
+│   │   │   ├── Color.h
+│   │   │   ├── DVSEventArray.h
+│   │   │   ├── DVSEvent.h
+│   │   │   ├── GnssMeasurement.h
+│   │   │   ├── Image.h
+│   │   │   ├── ImageTmpl.h
+│   │   │   ├── IMUMeasurement.h
+│   │   │   ├── LaneInvasionEvent.cpp
+│   │   │   ├── LaneInvasionEvent.h
+│   │   │   ├── LidarData.h
+│   │   │   ├── LidarMeasurement.h
+│   │   │   ├── ObstacleDetectionEvent.h
+│   │   │   ├── RadarData.h
+│   │   │   ├── RadarMeasurement.h
+│   │   │   ├── RawEpisodeState.h
+│   │   │   ├── RssResponse.h
+│   │   │   ├── SemanticLidarData.h
+│   │   │   └── SemanticLidarMeasurement.h
+│   │   ├── Deserializer.cpp
+│   │   ├── Deserializer.h
+│   │   ├── RawData.h
+│   │   ├── s11n
+│   │   │   ├── CollisionEventSerializer.cpp
+│   │   │   ├── CollisionEventSerializer.h
+│   │   │   ├── DVSEventArraySerializer.cpp
+│   │   │   ├── DVSEventArraySerializer.h
+│   │   │   ├── EpisodeStateSerializer.cpp
+│   │   │   ├── EpisodeStateSerializer.h
+│   │   │   ├── GBufferFloatSerializer.cpp
+│   │   │   ├── GBufferFloatSerializer.h
+│   │   │   ├── GBufferUint8Serializer.cpp
+│   │   │   ├── GBufferUint8Serializer.h
+│   │   │   ├── GnssSerializer.cpp
+│   │   │   ├── GnssSerializer.h
+│   │   │   ├── ImageSerializer.cpp
+│   │   │   ├── ImageSerializer.h
+│   │   │   ├── IMUSerializer.cpp
+│   │   │   ├── IMUSerializer.h
+│   │   │   ├── LidarSerializer.cpp
+│   │   │   ├── LidarSerializer.h
+│   │   │   ├── NoopSerializer.cpp
+│   │   │   ├── NoopSerializer.h
+│   │   │   ├── NormalsImageSerializer.cpp
+│   │   │   ├── NormalsImageSerializer.h
+│   │   │   ├── ObstacleDetectionEventSerializer.cpp
+│   │   │   ├── ObstacleDetectionEventSerializer.h
+│   │   │   ├── OpticalFlowImageSerializer.cpp
+│   │   │   ├── OpticalFlowImageSerializer.h
+│   │   │   ├── RadarSerializer.cpp
+│   │   │   ├── RadarSerializer.h
+│   │   │   ├── SemanticLidarSerializer.cpp
+│   │   │   ├── SemanticLidarSerializer.h
+│   │   │   ├── SensorHeaderSerializer.cpp
+│   │   │   └── SensorHeaderSerializer.h
+│   │   ├── SensorData.h
+│   │   └── SensorRegistry.h
+│   ├── Sockets.h
+│   ├── StopWatch.h
+│   ├── streaming
+│   │   ├── Client.h
+│   │   ├── detail
+│   │   │   ├── Dispatcher.cpp
+│   │   │   ├── Dispatcher.h
+│   │   │   ├── MultiStreamState.h
+│   │   │   ├── Session.h
+│   │   │   ├── Stream.h
+│   │   │   ├── StreamStateBase.cpp
+│   │   │   ├── StreamStateBase.h
+│   │   │   ├── tcp
+│   │   │   │   ├── Client.cpp
+│   │   │   │   ├── Client.h
+│   │   │   │   ├── Message.h
+│   │   │   │   ├── Server.cpp
+│   │   │   │   ├── Server.h
+│   │   │   │   ├── ServerSession.cpp
+│   │   │   │   └── ServerSession.h
+│   │   │   ├── Token.cpp
+│   │   │   ├── Token.h
+│   │   │   └── Types.h
+│   │   ├── EndPoint.h
+│   │   ├── low_level
+│   │   │   ├── Client.h
+│   │   │   └── Server.h
+│   │   ├── Server.h
+│   │   ├── Stream.h
+│   │   └── Token.h
+│   ├── StringUtil.cpp
+│   ├── StringUtil.h
+│   ├── ThreadGroup.h
+│   ├── ThreadPool.h
+│   ├── Time.h
+│   ├── trafficmanager
+│   │   ├── ALSM.cpp
+│   │   ├── ALSM.h
+│   │   ├── AtomicActorSet.h
+│   │   ├── AtomicMap.h
+│   │   ├── CachedSimpleWaypoint.cpp
+│   │   ├── CachedSimpleWaypoint.h
+│   │   ├── CollisionStage.cpp
+│   │   ├── CollisionStage.h
+│   │   ├── Constants.h
+│   │   ├── DataStructures.h
+│   │   ├── InMemoryMap.cpp
+│   │   ├── InMemoryMap.h
+│   │   ├── LocalizationStage.cpp
+│   │   ├── LocalizationStage.h
+│   │   ├── LocalizationUtils.cpp
+│   │   ├── LocalizationUtils.h
+│   │   ├── MotionPlanStage.cpp
+│   │   ├── MotionPlanStage.h
+│   │   ├── Parameters.cpp
+│   │   ├── Parameters.h
+│   │   ├── PIDController.h
+│   │   ├── RandomGenerator.h
+│   │   ├── SimpleWaypoint.cpp
+│   │   ├── SimpleWaypoint.h
+│   │   ├── SimulationState.cpp
+│   │   ├── SimulationState.h
+│   │   ├── SnippetProfiler.h
+│   │   ├── Stage.h
+│   │   ├── TrackTraffic.cpp
+│   │   ├── TrackTraffic.h
+│   │   ├── TrafficLightStage.cpp
+│   │   ├── TrafficLightStage.h
+│   │   ├── TrafficManagerBase.h
+│   │   ├── TrafficManagerClient.h
+│   │   ├── TrafficManager.cpp
+│   │   ├── TrafficManager.h
+│   │   ├── TrafficManagerLocal.cpp
+│   │   ├── TrafficManagerLocal.h
+│   │   ├── TrafficManagerRemote.cpp
+│   │   ├── TrafficManagerRemote.h
+│   │   ├── TrafficManagerServer.h
+│   │   ├── VehicleLightStage.cpp
+│   │   └── VehicleLightStage.h
+│   ├── TypeTraits.h
+│   ├── Version.h
+│   └── Version.h.in
+├── compiler
+│   ├── disable-ue4-macros.h
+│   └── enable-ue4-macros.h
+├── test
+│   ├── Buffer.cpp
+│   ├── Buffer.h
+│   ├── client
+│   │   ├── OpenDrive.cpp
+│   │   ├── OpenDrive.h
+│   │   ├── test_image.cpp
+│   │   ├── test_opendrive.cpp
+│   │   ├── test_recurrent_shared_future.cpp
+│   │   └── test_rpc.cpp
+│   ├── common
+│   │   ├── test_buffer.cpp
+│   │   ├── test_geom.cpp
+│   │   ├── test_listview.cpp
+│   │   ├── test_miscellaneous.cpp
+│   │   ├── test_msgpack.cpp
+│   │   ├── test_streaming.cpp
+│   │   └── test_vector3D.cpp
+│   ├── Random.h
+│   ├── server
+│   │   └── test_benchmark_streaming.cpp
+│   ├── test.cpp
+│   └── test.h
+└── third-party
+    ├── moodycamel
+    │   └── ConcurrentQueue.h
+    ├── odrSpiral
+    │   ├── odrSpiral.cpp
+    │   └── odrSpiral.h
+    └── pugixml
+        ├── LICENSE.md
+        ├── pugiconfig.hpp
+        ├── pugixml.cpp
+        └── pugixml.hpp
+
+34 directories, 442 files
+(parallel_ads_testing) mingg@mingg-ubuntu-office:/mnt/zhitainew/ParallelCarla/CARLA_0.9.14$ 
