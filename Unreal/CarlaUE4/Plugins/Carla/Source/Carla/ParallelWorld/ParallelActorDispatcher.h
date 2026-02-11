@@ -3,7 +3,9 @@
 #pragma once
 
 #include "Carla/Actor/ActorDispatcher.h"
-#include "Carla/ParallelWorld/ParallelWorldManager.h"
+
+// 前向声明
+class UParallelWorldManager;
 
 /**
  * 扩展ActorDispatcher以支持平行世界

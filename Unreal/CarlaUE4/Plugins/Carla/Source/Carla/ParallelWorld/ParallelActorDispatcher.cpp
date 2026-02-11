@@ -2,6 +2,7 @@
 
 #include "ParallelActorDispatcher.h"
 #include "Carla/Game/CarlaEpisode.h"
+#include "ParallelWorld/ParallelWorldManager.h"
 
 TPair<EActorSpawnResultStatus, FCarlaActor*> 
 FParallelActorDispatcher::SpawnActorInWorld(
@@ -18,7 +19,14 @@ FParallelActorDispatcher::SpawnActorInWorld(
     // 如果生成成功，分配到指定世界
     if (Result.Key == EActorSpawnResultStatus::Success && Result.Value)
     {
-        FParallelWorldManager::GetInstance().RegisterActor(Result.Value, WorldID);
+        FCarlaActor::IdType ActorId = Result.Value->GetActorId();
+        AActor* Actor = Result.Value->GetActor();
+        
+        UParallelWorldManager* WorldManager = UParallelWorldManager::GetInstance();
+        if (WorldManager && WorldManager->IsParallelWorldEnabled())
+        {
+            WorldManager->RegisterActor(ActorId, WorldID, Actor);
+        }
     }
     
     return Result;
@@ -38,7 +46,53 @@ bool FParallelActorDispatcher::AssignActorToWorld(
         return false;
     }
     
+    AActor* Actor = CarlaActor->GetActor();
+    
     // 注册到世界管理器
-    FParallelWorldManager::GetInstance().RegisterActor(CarlaActor, WorldID);
-    return true;
+    UParallelWorldManager* WorldManager = UParallelWorldManager::GetInstance();
+    if (WorldManager && WorldManager->IsParallelWorldEnabled())
+    {
+        WorldManager->UpdateActorWorld(ActorId, WorldID, Actor);
+        return true;
+    }
+    
+    return false;
+}
+
+int32 FParallelActorDispatcher::GetActorWorldID(FCarlaActor::IdType ActorId)
+{
+    UParallelWorldManager* WorldManager = UParallelWorldManager::GetInstance();
+    if (WorldManager && WorldManager->IsParallelWorldEnabled())
+    {
+        return WorldManager->GetActorWorldID(ActorId);
+    }
+    return 0;  // 默认世界
+}
+
+void FParallelActorDispatcher::BatchAssignActorsToWorld(
+    UActorDispatcher* BaseDispatcher,
+    const TArray<FCarlaActor::IdType>& ActorIds,
+    int32 WorldID)
+{
+    UParallelWorldManager* WorldManager = UParallelWorldManager::GetInstance();
+    if (!WorldManager || !WorldManager->IsParallelWorldEnabled())
+    {
+        return;
+    }
+    
+    for (FCarlaActor::IdType ActorId : ActorIds)
+    {
+        // 查找Actor
+        FCarlaActor* CarlaActor = BaseDispatcher->GetActorRegistry().FindCarlaActor(ActorId);
+        if (CarlaActor)
+        {
+            AActor* Actor = CarlaActor->GetActor();
+            WorldManager->UpdateActorWorld(ActorId, WorldID, Actor);
+        }
+        else
+        {
+            UE_LOG(LogCarla, Warning, TEXT("Cannot assign actor %d to world %d: Actor not found"), 
+                ActorId, WorldID);
+        }
+    }
 }

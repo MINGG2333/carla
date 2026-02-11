@@ -31,6 +31,17 @@ public:
     // 获取/设置默认世界ID
     int32 GetDefaultWorldID() const { return DefaultWorldID; }
     
+    // 获取/设置是否自动分配新Actor到默认世界
+    bool GetAutoAssignToDefaultWorld() const { return bAutoAssignToDefaultWorld; }
+    void SetAutoAssignToDefaultWorld(bool bAuto) { bAutoAssignToDefaultWorld = bAuto; }
+    
+    // 获取/设置是否启用调试日志
+    bool GetDebugLogging() const { return bDebugLogging; }
+    void SetDebugLogging(bool bDebug) { bDebugLogging = bDebug; }
+    
+    // 获取配置是否已加载
+    bool IsConfigLoaded() const { return bConfigLoaded; }
+    
     // 获取配置文件名
     static FString GetConfigFileName() { return TEXT("ParallelWorld.ini"); }
     
@@ -41,6 +52,8 @@ private:
     bool bEnableParallelWorlds = true;
     int32 MaxParallelWorlds = 4;
     int32 DefaultWorldID = 0;
+    bool bAutoAssignToDefaultWorld = true;
+    bool bDebugLogging = false;
     
     // 是否已加载配置
     bool bConfigLoaded = false;

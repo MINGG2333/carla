@@ -36,7 +36,7 @@ public:
     
     // 获取平行世界管理器
     UFUNCTION(BlueprintCallable, Category="Parallel World")
-    FParallelWorldManager& GetParallelWorldManager() const;
+    UParallelWorldManager* GetParallelWorldManager() const;
     
 protected:
     // 是否启用平行世界（可通过配置文件控制）

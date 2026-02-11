@@ -3,8 +3,9 @@
 #pragma once
 
 #include "Carla/Game/CarlaEpisode.h"
-#include "ParallelWorldManager.h"
-#include "ParallelActorDispatcher.h"
+
+// 前向声明
+class UParallelWorldManager;
 
 /**
  * 扩展CarlaEpisode功能的工具类

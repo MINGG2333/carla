@@ -2,65 +2,89 @@
 
 #pragma once
 
-#include "Carla/ParallelWorld/ParallelCarlaActor.h"
 #include "Containers/Map.h"
 #include "CoreMinimal.h"
+#include "UObject/NoExportTypes.h"
+#include "WorldProperties.h"
+#include "ParallelWorldManager.generated.h"
+
+// 前向声明
+class FCarlaActor;
 
 /**
- * 管理平行世界的单例类
- * 参考CARLA中其他管理器的实现方式（如TrafficLightManager）
+ * 管理平行世界的UCLASS
+ * 简化版本：只存储映射关系，不管理actor生命周期
  */
-class CARLA_API FParallelWorldManager
+UCLASS(BlueprintType)
+class CARLA_API UParallelWorldManager : public UObject
 {
+    GENERATED_BODY()
+    
 public:
-    // 单例访问（参考CARLA中其他管理器的实现）
-    static FParallelWorldManager& GetInstance();
+    // 单例访问
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    static UParallelWorldManager* GetInstance();
     
     // 初始化/清理
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     void Initialize();
+    
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     void Reset();
     
     // 世界管理
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     int32 CreateWorld(const FString& WorldName = TEXT(""));
+    
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     bool DestroyWorld(int32 WorldID);
+    
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     bool IsValidWorld(int32 WorldID) const;
     
-    // Actor管理
-    void RegisterActor(FCarlaActor* Actor, int32 WorldID);
+    // Actor管理（使用ActorId）
+    void RegisterActor(FCarlaActor::IdType ActorId, int32 WorldID, AActor* Actor = nullptr);
     void UnregisterActor(FCarlaActor::IdType ActorId);
-    void UpdateActorWorld(FCarlaActor::IdType ActorId, int32 NewWorldID);
+    void UpdateActorWorld(FCarlaActor::IdType ActorId, int32 NewWorldID, AActor* Actor = nullptr);
     
     // 查询
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     int32 GetActorWorldID(FCarlaActor::IdType ActorId) const;
+    
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     TArray<FCarlaActor::IdType> GetActorsInWorld(int32 WorldID) const;
     
     // 获取世界属性
-    const FWorldProperties* GetWorldProperties(int32 WorldID) const;
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    FWorldProperties GetWorldProperties(int32 WorldID) const;
     
-    // 获取平行Actor
-    TSharedPtr<FParallelCarlaActor> GetParallelActor(FCarlaActor::IdType ActorId);
-    TSharedPtr<FParallelCarlaActor> GetParallelActor(const AActor* Actor);
+    // 获取世界数量
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    int32 GetWorldCount() const { return WorldPropertiesMap.Num(); }
     
     // 调试信息
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     void DebugLogWorldInfo() const;
-    FString GetDebugInfoString() const;
     
     // 检查功能是否启用
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     bool IsParallelWorldEnabled() const { return bEnabled; }
+    
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
     void SetParallelWorldEnabled(bool bEnable) { bEnabled = bEnable; }
+    
+    // 获取所有世界ID
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    TArray<int32> GetAllWorldIDs() const;
+    
+    // 应用世界设置到actor（如果提供了actor指针）
+    void ApplyWorldSettingsToActor(AActor* Actor, int32 WorldID);
     
 private:
     // 私有构造函数
-    FParallelWorldManager();
+    UParallelWorldManager();
     
-    // 禁用复制
-    FParallelWorldManager(const FParallelWorldManager&) = delete;
-    FParallelWorldManager& operator=(const FParallelWorldManager&) = delete;
-    
-    // Actor映射：ActorID -> ParallelCarlaActor
-    TMap<FCarlaActor::IdType, TSharedPtr<FParallelCarlaActor>> ParallelActors;
-    
-    // Actor到世界ID的快速查找（用于性能优化）
+    // Actor到世界ID的映射
     TMap<FCarlaActor::IdType, int32> ActorToWorldMap;
     
     // 世界ID到Actor列表的映射
@@ -77,4 +101,7 @@ private:
     
     // 是否已初始化
     bool bInitialized;
+    
+    // 静态实例
+    static UParallelWorldManager* GParallelWorldManager;
 };
