@@ -6,10 +6,8 @@
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
 #include "WorldProperties.h"
+#include "Carla/Actor/CarlaActor.h"
 #include "ParallelWorldManager.generated.h"
-
-// 前向声明
-class FCarlaActor;
 
 /**
  * 管理平行世界的UCLASS
