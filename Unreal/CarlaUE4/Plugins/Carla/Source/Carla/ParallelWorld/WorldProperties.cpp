@@ -5,9 +5,16 @@
 
 ECollisionChannel FParallelWorldUtils::GetCollisionChannelForWorld(int32 WorldID)
 {
-    // 这里需要先定义碰撞通道，可以在CarlaGameModeBase初始化时设置
-    // 暂时返回默认通道
-    return ECC_WorldStatic;
+    // 需要先在项目设置中定义这些通道
+    static TMap<int32, ECollisionChannel> ChannelMap = {
+        {0, ECC_GameTraceChannel4},  // ParallelWorld0
+        {1, ECC_GameTraceChannel5},  // ParallelWorld1
+        {2, ECC_GameTraceChannel6},  // ParallelWorld2
+        {3, ECC_GameTraceChannel7},  // ParallelWorld3
+        {-1, ECC_WorldStatic}        // 共享对象
+    };
+    
+    return ChannelMap.Contains(WorldID) ? ChannelMap[WorldID] : ECC_WorldStatic;
 }
 
 uint32 FParallelWorldUtils::GetRenderLayerMaskForWorld(int32 WorldID)

@@ -7,14 +7,32 @@
 // 单例实例
 UParallelWorldManager* UParallelWorldManager::GParallelWorldManager = nullptr;
 
+// 懒加载 + 游戏模式管理的模式
 UParallelWorldManager* UParallelWorldManager::GetInstance()
 {
+    // 如果GParallelWorldManager为空，尝试查找现有的实例
     if (!GParallelWorldManager)
     {
-// 创建一个新的实例
-        GParallelWorldManager = NewObject<UParallelWorldManager>();
-        GParallelWorldManager->AddToRoot();  // 防止垃圾回收
+        // 在World中查找现有的ParallelWorldManager
+        UWorld* World = nullptr;
+        if (GEngine)
+        {
+            World = GEngine->GetWorld();
+        }
+        
+        if (World)
+        {
+            // 查找已存在的实例
+            TArray<UObject*> Managers;
+            GetObjectsOfClass(UParallelWorldManager::StaticClass(), Managers);
+            
+            if (Managers.Num() > 0)
+            {
+                GParallelWorldManager = Cast<UParallelWorldManager>(Managers[0]);
+            }
+        }
     }
+    
     return GParallelWorldManager;
 }
 
@@ -280,18 +298,24 @@ void UParallelWorldManager::ApplyWorldSettingsToActor(AActor* Actor, int32 World
         return;
     }
     
-    // 应用碰撞设置
-    // 遍历所有PrimitiveComponent并设置碰撞
+    // 1. 设置碰撞通道
     TArray<UPrimitiveComponent*> Components;
     Actor->GetComponents<UPrimitiveComponent>(Components);
     
     for (UPrimitiveComponent* Component : Components)
     {
+        // 设置物体类型为本世界的碰撞通道
+        Component->SetCollisionObjectType(
+            FParallelWorldUtils::GetCollisionChannelForWorld(WorldID));
+        
+        // 设置与其他世界的碰撞响应
         FParallelWorldUtils::SetupComponentCollisionForWorld(Component, WorldID);
     }
     
-    // 应用渲染设置（待实现）
-    // TODO: 根据WorldProperties->RenderLayerMask设置渲染层
+    // 2. 设置渲染标记（TODO：第二阶段实现）
+    // 为Actor添加自定义渲染层标记
+    Actor->Tags.Add(FName(*FString::Printf(TEXT("ParallelWorld_%d"), WorldID)));
+    
     UE_LOG(LogCarla, Verbose, TEXT("Applied world %d settings to actor %s"), 
         WorldID, *Actor->GetName());
 }

@@ -16,11 +16,15 @@ FParallelActorDispatcher::SpawnActorInWorld(
     TPair<EActorSpawnResultStatus, FCarlaActor*> Result = 
         BaseDispatcher->SpawnActor(Transform, ActorDescription, DesiredId);
     
-    // 如果生成成功，分配到指定世界
+// 如果生成成功，分配到指定世界
     if (Result.Key == EActorSpawnResultStatus::Success && Result.Value)
     {
-        FCarlaActor::IdType ActorId = Result.Value->GetActorId();
-        AActor* Actor = Result.Value->GetActor();
+        FCarlaActor* CarlaActor = Result.Value;
+        FCarlaActor::IdType ActorId = CarlaActor->GetActorId();
+        AActor* Actor = CarlaActor->GetActor();
+        
+        // 在CARLA系统中注册Actor（如果需要）
+        // 通常CARLA会自动注册，但我们需要确保
         
         UParallelWorldManager* WorldManager = UParallelWorldManager::GetInstance();
         if (WorldManager && WorldManager->IsParallelWorldEnabled())
