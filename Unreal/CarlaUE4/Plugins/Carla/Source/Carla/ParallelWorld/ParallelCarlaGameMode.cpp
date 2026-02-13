@@ -1,10 +1,10 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/ParallelCarlaGameMode.cpp
 
-#include "ParallelCarlaGameMode.h"
+#include "Carla/ParallelWorld/ParallelCarlaGameMode.h"
 #include "Carla/Game/CarlaGameModeBase.h"
 #include "Carla/Game/CarlaEpisode.h"
-#include "ParallelWorld/ParallelWorldManager.h"
-#include "ParallelWorld/ParallelWorldConfig.h"
+#include "Carla/ParallelWorld/ParallelWorldManager.h"
+#include "Carla/ParallelWorld/ParallelWorldConfig.h"
 
 AParallelCarlaGameMode::AParallelCarlaGameMode(const FObjectInitializer& ObjectInitializer)
     : Super(ObjectInitializer)

@@ -5,7 +5,7 @@
 #include "Containers/Map.h"
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "WorldProperties.h"
+#include "Carla/ParallelWorld/WorldProperties.h"
 #include "Carla/Actor/CarlaActor.h"
 #include "ParallelWorldManager.generated.h"
 

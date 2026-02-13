@@ -1,8 +1,8 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/ParallelEpisodeExtension.cpp
 
-#include "ParallelEpisodeExtension.h"
+#include "Carla/ParallelWorld/ParallelEpisodeExtension.h"
 #include "Carla/Game/CarlaEpisode.h"
-#include "ParallelWorld/ParallelWorldManager.h"
+#include "Carla/ParallelWorld/ParallelWorldManager.h"
 
 TPair<EActorSpawnResultStatus, FCarlaActor*> 
 FParallelEpisodeExtension::SpawnActorInWorld(

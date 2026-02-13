@@ -1,6 +1,6 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/ParallelWorldConfig.cpp
 
-#include "ParallelWorldConfig.h"
+#include "Carla/ParallelWorld/ParallelWorldConfig.h"
 #include "Misc/Paths.h"
 #include "Misc/ConfigCacheIni.h"
 

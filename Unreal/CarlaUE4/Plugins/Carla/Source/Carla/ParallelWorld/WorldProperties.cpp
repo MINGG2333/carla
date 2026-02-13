@@ -1,6 +1,6 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/WorldProperties.cpp
 
-#include "WorldProperties.h"
+#include "Carla/ParallelWorld/WorldProperties.h"
 #include "Components/PrimitiveComponent.h"
 
 ECollisionChannel FParallelWorldUtils::GetCollisionChannelForWorld(int32 WorldID)

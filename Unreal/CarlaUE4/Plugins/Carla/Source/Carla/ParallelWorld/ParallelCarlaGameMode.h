@@ -2,9 +2,8 @@
 
 #pragma once
 
-#include "GameFramework/GameModeBase.h"
 #include "Carla/Game/CarlaGameModeBase.h"  // 继承自原有GameMode
-#include "ParallelWorld/ParallelWorldManager.h"
+#include "Carla/ParallelWorld/ParallelWorldManager.h"
 #include "ParallelCarlaGameMode.generated.h"
 
 /**

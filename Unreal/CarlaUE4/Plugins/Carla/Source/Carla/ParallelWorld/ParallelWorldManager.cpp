@@ -1,6 +1,6 @@
 // Plugins/Carla/Source/Carla/ParallelWorld/ParallelWorldManager.cpp
 
-#include "ParallelWorldManager.h"
+#include "Carla/ParallelWorld/ParallelWorldManager.h"
 #include "Carla/Game/CarlaEpisode.h"
 #include "Carla/Actor/ActorRegistry.h"
 
