@@ -37,6 +37,9 @@ public:
     UFUNCTION(BlueprintCallable, Category="Parallel World")
     UParallelWorldManager* GetParallelWorldManager() const;
     
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    int32 GetParallelWorldCount() const;
+    
 protected:
     // 是否启用平行世界（可通过配置文件控制）
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Parallel World")

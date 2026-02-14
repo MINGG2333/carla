@@ -69,7 +69,10 @@ void AParallelCarlaGameMode::BeginPlay()
     if (bEnableParallelWorlds)
     {
         // 确保Episode已经初始化
-        if (Episode)
+        // 使用GetCarlaEpisode()而不是直接访问Episode
+        // Episode是私有成员，但GetCarlaEpisode()是公有接口
+        const UCarlaEpisode* CarlaEpisode = &GetCarlaEpisode();
+        if (CarlaEpisode)
         {
             UE_LOG(LogCarla, Log, TEXT("ParallelCarlaGameMode BeginPlay - Episode ready"));
             

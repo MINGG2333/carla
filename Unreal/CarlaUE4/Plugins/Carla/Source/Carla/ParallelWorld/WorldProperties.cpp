@@ -2,19 +2,20 @@
 
 #include "Carla/ParallelWorld/WorldProperties.h"
 #include "Components/PrimitiveComponent.h"
+#include "Engine/EngineTypes.h"  // 添加这个头文件以支持ECollisionChannel
 
 ECollisionChannel FParallelWorldUtils::GetCollisionChannelForWorld(int32 WorldID)
 {
     // 需要先在项目设置中定义这些通道
-    static TMap<int32, ECollisionChannel> ChannelMap = {
-        {0, ECC_GameTraceChannel4},  // ParallelWorld0
-        {1, ECC_GameTraceChannel5},  // ParallelWorld1
-        {2, ECC_GameTraceChannel6},  // ParallelWorld2
-        {3, ECC_GameTraceChannel7},  // ParallelWorld3
-        {-1, ECC_WorldStatic}        // 共享对象
-    };
-    
-    return ChannelMap.Contains(WorldID) ? ChannelMap[WorldID] : ECC_WorldStatic;
+    // 使用正确的碰撞通道枚举值
+    switch (WorldID)
+    {
+        case 0: return ECollisionChannel::ECC_GameTraceChannel4;  // ParallelWorld0
+        case 1: return ECollisionChannel::ECC_GameTraceChannel5;  // ParallelWorld1
+        case 2: return ECollisionChannel::ECC_GameTraceChannel6;  // ParallelWorld2
+        case 3: return ECollisionChannel::ECC_GameTraceChannel7;  // ParallelWorld3
+        default: return ECollisionChannel::ECC_WorldStatic;       // 共享对象
+    }
 }
 
 int32 FParallelWorldUtils::GetRenderLayerMaskForWorld(int32 WorldID)

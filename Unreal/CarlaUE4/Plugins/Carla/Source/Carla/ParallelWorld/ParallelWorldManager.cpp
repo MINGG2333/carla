@@ -7,32 +7,14 @@
 // 单例实例
 UParallelWorldManager* UParallelWorldManager::GParallelWorldManager = nullptr;
 
-// 懒加载 + 游戏模式管理的模式
 UParallelWorldManager* UParallelWorldManager::GetInstance()
 {
-    // 如果GParallelWorldManager为空，尝试查找现有的实例
     if (!GParallelWorldManager)
     {
-        // 在World中查找现有的ParallelWorldManager
-        UWorld* World = nullptr;
-        if (GEngine)
-        {
-            World = GEngine->GetWorld();
-        }
-        
-        if (World)
-        {
-            // 查找已存在的实例
-            TArray<UObject*> Managers;
-            GetObjectsOfClass(UParallelWorldManager::StaticClass(), Managers);
-            
-            if (Managers.Num() > 0)
-            {
-                GParallelWorldManager = Cast<UParallelWorldManager>(Managers[0]);
-            }
-        }
+        // 创建一个新的实例
+        GParallelWorldManager = NewObject<UParallelWorldManager>();
+        GParallelWorldManager->AddToRoot();  // 防止垃圾回收
     }
-    
     return GParallelWorldManager;
 }
 
