@@ -28,26 +28,49 @@ struct FParallelRenderLayer
     static constexpr uint32 Shared = 1 << 4;
 };
 
-// 轻量级的世界属性结构体，不继承UObject以简化
+// 轻量级的世界属性结构体
+USTRUCT(BlueprintType)
 struct FWorldProperties
 {
+    GENERATED_BODY()
+
+public:
     // 世界ID
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
     int32 WorldID = 0;
     
     // 世界名称
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
     FString WorldName = TEXT("DefaultWorld");
     
     // 物理碰撞相关
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
     EParallelCollisionChannel CollisionChannel = EParallelCollisionChannel::PCC_World0;
     
     // 渲染相关
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
     uint32 RenderLayerMask = FParallelRenderLayer::World0;
     
     // 是否为默认世界
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
     bool bIsDefaultWorld = true;
     
     // 世界是否激活
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
     bool bIsActive = true;
+    
+    // 默认构造函数
+    FWorldProperties() = default;
+    
+    // 带参数的构造函数
+    FWorldProperties(int32 InWorldID, const FString& InWorldName = TEXT(""))
+        : WorldID(InWorldID)
+        , WorldName(InWorldName.IsEmpty() ? FString::Printf(TEXT("World_%d"), InWorldID) : InWorldName)
+        , bIsDefaultWorld(InWorldID == 0)
+        , bIsActive(true)
+    {
+        // 碰撞通道和渲染层将在外部设置
+    }
 };
 
 // 工具函数类

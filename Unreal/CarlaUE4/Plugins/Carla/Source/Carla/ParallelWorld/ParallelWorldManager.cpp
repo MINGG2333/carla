@@ -87,10 +87,7 @@ int32 UParallelWorldManager::CreateWorld(const FString& WorldName)
     
     int32 NewWorldID = NextWorldID++;
     
-    FWorldProperties NewWorld;
-    NewWorld.WorldID = NewWorldID;
-    NewWorld.WorldName = WorldName.IsEmpty() ? 
-        FString::Printf(TEXT("World_%d"), NewWorldID) : WorldName;
+    FWorldProperties NewWorld(NewWorldID, WorldName);
     NewWorld.bIsDefaultWorld = false;
     NewWorld.CollisionChannel = FParallelWorldUtils::WorldIDToCollisionChannel(NewWorldID);
     NewWorld.RenderLayerMask = FParallelWorldUtils::WorldIDToRenderLayerMask(NewWorldID);
