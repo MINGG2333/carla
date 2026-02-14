@@ -17,7 +17,7 @@ ECollisionChannel FParallelWorldUtils::GetCollisionChannelForWorld(int32 WorldID
     return ChannelMap.Contains(WorldID) ? ChannelMap[WorldID] : ECC_WorldStatic;
 }
 
-uint32 FParallelWorldUtils::GetRenderLayerMaskForWorld(int32 WorldID)
+int32 FParallelWorldUtils::GetRenderLayerMaskForWorld(int32 WorldID)
 {
     switch (WorldID)
     {
@@ -78,7 +78,7 @@ EParallelCollisionChannel FParallelWorldUtils::WorldIDToCollisionChannel(int32 W
     }
 }
 
-uint32 FParallelWorldUtils::WorldIDToRenderLayerMask(int32 WorldID)
+int32 FParallelWorldUtils::WorldIDToRenderLayerMask(int32 WorldID)
 {
     // 这个函数其实和 GetRenderLayerMaskForWorld 功能相同
     // 为了保持一致性，我们调用已有的函数

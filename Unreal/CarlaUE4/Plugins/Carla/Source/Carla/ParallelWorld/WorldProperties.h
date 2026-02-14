@@ -21,11 +21,11 @@ enum class EParallelCollisionChannel : uint8
 // 世界渲染层，使用位掩码实现
 struct FParallelRenderLayer
 {
-    static constexpr uint32 World0 = 1 << 0;
-    static constexpr uint32 World1 = 1 << 1;
-    static constexpr uint32 World2 = 1 << 2;
-    static constexpr uint32 World3 = 1 << 3;
-    static constexpr uint32 Shared = 1 << 4;
+    static constexpr int32 World0 = 1 << 0;
+    static constexpr int32 World1 = 1 << 1;
+    static constexpr int32 World2 = 1 << 2;
+    static constexpr int32 World3 = 1 << 3;
+    static constexpr int32 Shared = 1 << 4;
 };
 
 // 轻量级的世界属性结构体
@@ -49,7 +49,7 @@ public:
     
     // 渲染相关
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
-    uint32 RenderLayerMask = FParallelRenderLayer::World0;
+    int32 RenderLayerMask = FParallelRenderLayer::World0;
     
     // 是否为默认世界
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "World Properties")
@@ -81,7 +81,7 @@ public:
     static ECollisionChannel GetCollisionChannelForWorld(int32 WorldID);
     
     // 获取世界的渲染层掩码
-    static uint32 GetRenderLayerMaskForWorld(int32 WorldID);
+    static int32 GetRenderLayerMaskForWorld(int32 WorldID);
     
     // 设置组件的碰撞响应
     static void SetupComponentCollisionForWorld(
@@ -93,5 +93,5 @@ public:
     static EParallelCollisionChannel WorldIDToCollisionChannel(int32 WorldID);
     
     // 转换WorldID到渲染层掩码
-    static uint32 WorldIDToRenderLayerMask(int32 WorldID);
+    static int32 WorldIDToRenderLayerMask(int32 WorldID);
 };
