@@ -46,10 +46,7 @@ public:
     void UpdateActorWorld(FCarlaActor::IdType ActorId, int32 NewWorldID, AActor* Actor = nullptr);
     
     // 查询
-    UFUNCTION(BlueprintCallable, Category="Parallel World")
     int32 GetActorWorldID(FCarlaActor::IdType ActorId) const;
-    
-    UFUNCTION(BlueprintCallable, Category="Parallel World")
     TArray<FCarlaActor::IdType> GetActorsInWorld(int32 WorldID) const;
     
     // 获取世界属性
