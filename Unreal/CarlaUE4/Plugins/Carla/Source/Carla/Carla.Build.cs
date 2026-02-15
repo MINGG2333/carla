@@ -62,7 +62,6 @@ public class Carla : ModuleRules
     PrivateIncludePaths.AddRange(
       new string[] {
         // ... add other private include paths required here ...
-        Path.Combine(ModuleDirectory, "ParallelWorld"),
       }
       );
 
