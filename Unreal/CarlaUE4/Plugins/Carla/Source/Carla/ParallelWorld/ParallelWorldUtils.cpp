@@ -1,7 +1,6 @@
-// Plugins/Carla/Source/Carla/ParallelWorld/WorldProperties.cpp
+// Plugins/Carla/Source/Carla/Game/ParallelWorldUtils.cpp
 
-#include "Carla/ParallelWorld/WorldProperties.h"
-#include "Components/PrimitiveComponent.h"
+#include "Carla/Game/ParallelWorldUtils.h"
 #include "Engine/EngineTypes.h"  // 添加这个头文件以支持ECollisionChannel
 
 ECollisionChannel FParallelWorldUtils::GetCollisionChannelForWorld(int32 WorldID)
@@ -59,7 +58,7 @@ void FParallelWorldUtils::SetupComponentCollisionForWorld(
     // 共享对象（建筑、道路）与所有世界碰撞
     // 使用预设的共享通道
     Component->SetCollisionResponseToChannel(
-        GetCollisionChannelForWorld(-1),  // -1表示共享
+        ECollisionChannel::ECC_WorldStatic,  // 使用WorldStatic作为共享通道
         ECR_Block
     );
 }

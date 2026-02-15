@@ -1,10 +1,9 @@
-// Plugins/Carla/Source/Carla/ParallelWorld/WorldProperties.h
+// Plugins/Carla/Source/Carla/Game/ParallelWorldTypes.h
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-#include "WorldProperties.generated.h"
+#include "ParallelWorldTypes.generated.h"
 
 // 为每个世界分配一个碰撞通道，最多支持8个平行世界
 // 注意：UE4最多支持62个自定义碰撞通道，我们从中分配一部分给平行世界
@@ -71,27 +70,4 @@ public:
     {
         // 碰撞通道和渲染层将在外部设置
     }
-};
-
-// 工具函数类
-class CARLA_API FParallelWorldUtils
-{
-public:
-    // 获取世界的碰撞通道
-    static ECollisionChannel GetCollisionChannelForWorld(int32 WorldID);
-    
-    // 获取世界的渲染层掩码
-    static int32 GetRenderLayerMaskForWorld(int32 WorldID);
-    
-    // 设置组件的碰撞响应
-    static void SetupComponentCollisionForWorld(
-        UPrimitiveComponent* Component, 
-        int32 WorldID
-    );
-    
-    // 转换WorldID到碰撞通道枚举值
-    static EParallelCollisionChannel WorldIDToCollisionChannel(int32 WorldID);
-    
-    // 转换WorldID到渲染层掩码
-    static int32 WorldIDToRenderLayerMask(int32 WorldID);
 };

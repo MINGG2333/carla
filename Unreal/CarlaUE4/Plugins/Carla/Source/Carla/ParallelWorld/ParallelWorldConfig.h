@@ -1,4 +1,4 @@
-// Plugins/Carla/Source/Carla/ParallelWorld/ParallelWorldConfig.h
+// Plugins/Carla/Source/Carla/Game/ParallelWorldConfig.h
 
 #pragma once
 

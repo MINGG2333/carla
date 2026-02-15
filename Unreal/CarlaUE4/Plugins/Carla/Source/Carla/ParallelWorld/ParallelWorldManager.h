@@ -1,11 +1,11 @@
-// Plugins/Carla/Source/Carla/ParallelWorld/ParallelWorldManager.h
+// Plugins/Carla/Source/Carla/Game/ParallelWorldManager.h
 
 #pragma once
 
 #include "Containers/Map.h"
 #include "CoreMinimal.h"
 #include "UObject/NoExportTypes.h"
-#include "Carla/ParallelWorld/WorldProperties.h"
+#include "Carla/Game/ParallelWorldTypes.h"
 #include "Carla/Actor/CarlaActor.h"
 #include "ParallelWorldManager.generated.h"
 

@@ -1,9 +1,9 @@
-// Plugins/Carla/Source/Carla/ParallelWorld/ParallelCarlaGameMode.h
+// Plugins/Carla/Source/Carla/Game/ParallelCarlaGameMode.h
 
 #pragma once
 
 #include "Carla/Game/CarlaGameModeBase.h"  // 继承自原有GameMode
-#include "Carla/ParallelWorld/ParallelWorldManager.h"
+#include "Carla/Game/ParallelWorldManager.h"
 #include "ParallelCarlaGameMode.generated.h"
 
 /**

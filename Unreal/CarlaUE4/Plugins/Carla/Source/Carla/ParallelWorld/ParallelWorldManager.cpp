@@ -1,8 +1,9 @@
-// Plugins/Carla/Source/Carla/ParallelWorld/ParallelWorldManager.cpp
+// Plugins/Carla/Source/Carla/Game/ParallelWorldManager.cpp
 
-#include "Carla/ParallelWorld/ParallelWorldManager.h"
+#include "Carla/Game/ParallelWorldManager.h"
 #include "Carla/Game/CarlaEpisode.h"
 #include "Carla/Actor/ActorRegistry.h"
+#include "Carla/Game/ParallelWorldUtils.h"
 
 // 单例实例
 UParallelWorldManager* UParallelWorldManager::GParallelWorldManager = nullptr;
