@@ -9,6 +9,7 @@
 #include "Engine/StaticMesh.h"
 
 #include "Carla/Settings/QualityLevelUE.h"
+#include "Carla/Game/ParallelWorldSettings.h"
 
 #include "CarlaSettings.generated.h"
 
@@ -21,6 +22,11 @@ UCLASS(BlueprintType, Blueprintable, config = Game, defaultconfig)
 class CARLA_API UCarlaSettings : public UObject
 {
   GENERATED_BODY()
+    
+public:
+    // 平行世界设置
+    UPROPERTY(EditAnywhere, Category="Parallel World")
+    FParallelWorldSettings ParallelWorldSettings;
 
 public:
 

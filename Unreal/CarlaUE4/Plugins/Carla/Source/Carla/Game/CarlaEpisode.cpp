@@ -405,33 +405,91 @@ void UCarlaEpisode::InitializeAtBeginPlay()
     // -- Initialize Parallel World System ---------------------------------------
     // ===========================================================================
     
-    // 加载配置
-    FParallelWorldConfig& Config = FParallelWorldConfig::Get();
-    if (!Config.LoadConfig())
+    // 加载平行世界配置
+    UCarlaGameInstance * GameInstance = UCarlaStatics::GetGameInstance(World);
+    if (GameInstance)
     {
-        // 如果配置文件不存在，保存默认配置
-        Config.SaveConfig();
-    }
-    
-    // 应用配置
-    bParallelWorldsEnabled = Config.IsParallelWorldEnabled();
-    
-    if (bParallelWorldsEnabled)
-    {
-        // 创建平行世界管理器
-        ParallelWorldManager = NewObject<UParallelWorldManager>(this);
-        ParallelWorldManager->Initialize();
-        
-        UE_LOG(LogCarla, Log, TEXT("Parallel world system initialized. Max worlds: %d"), 
-               Config.GetMaxParallelWorlds());
-        
-        // 初始化碰撞通道
-        // 这里可以调用ParallelWorldManager中的初始化函数
-        // 或者通过配置设置碰撞通道
+        UCarlaSettings* CarlaSettings = GameInstance->GetCARLASettings();
+        if (CarlaSettings)
+        {
+            // 检查平行世界是否启用
+            bParallelWorldsEnabled = CarlaSettings->ParallelWorldSettings.bEnableParallelWorlds;
+            
+            if (bParallelWorldsEnabled)
+            {
+                // 验证配置有效性
+                if (CarlaSettings->ParallelWorldSettings.MaxParallelWorlds < 1 || 
+                    CarlaSettings->ParallelWorldSettings.MaxParallelWorlds > 8)
+                {
+                    UE_LOG(LogCarla, Error, 
+                        TEXT("Invalid MaxParallelWorlds value: %d, should be between 1 and 8"), 
+                        CarlaSettings->ParallelWorldSettings.MaxParallelWorlds);
+                    bParallelWorldsEnabled = false;
+                }
+                else
+                {
+                    // 创建平行世界管理器
+                    ParallelWorldManager = NewObject<UParallelWorldManager>(this);
+                    if (ParallelWorldManager)
+                    {
+                        ParallelWorldManager->Initialize();
+                        
+                        // 设置最大世界数
+                        ParallelWorldManager->SetMaxWorlds(
+                            CarlaSettings->ParallelWorldSettings.MaxParallelWorlds);
+                        
+                        UE_LOG(LogCarla, Log, 
+                            TEXT("Parallel world system initialized. Max worlds: %d, Debug logging: %s"), 
+                            CarlaSettings->ParallelWorldSettings.MaxParallelWorlds,
+                            CarlaSettings->ParallelWorldSettings.bDebugLogging ? TEXT("Enabled") : TEXT("Disabled"));
+                        
+                        // 如果需要调试日志
+                        if (CarlaSettings->ParallelWorldSettings.bDebugLogging)
+                        {
+                            ParallelWorldManager->DebugLogWorldInfo();
+                        }
+                        
+                        // 记录配置信息
+                        UE_LOG(LogCarla, Log, 
+                            TEXT("Parallel World Settings: Enable=%s, MaxWorlds=%d, AutoAssign=%s"),
+                            CarlaSettings->ParallelWorldSettings.bEnableParallelWorlds ? TEXT("True") : TEXT("False"),
+                            CarlaSettings->ParallelWorldSettings.MaxParallelWorlds,
+                            CarlaSettings->ParallelWorldSettings.bAutoAssignToDefaultWorld ? TEXT("True") : TEXT("False"));
+                    }
+                    else
+                    {
+                        UE_LOG(LogCarla, Error, TEXT("Failed to create ParallelWorldManager"));
+                        bParallelWorldsEnabled = false;
+                    }
+                }
+            }
+            else
+            {
+                UE_LOG(LogCarla, Log, TEXT("Parallel world system is disabled by configuration"));
+            }
+        }
+        else
+        {
+            UE_LOG(LogCarla, Warning, TEXT("CarlaSettings not found, parallel world system disabled"));
+            bParallelWorldsEnabled = false;
+        }
     }
     else
     {
-        UE_LOG(LogCarla, Log, TEXT("Parallel world system is disabled by configuration"));
+        UE_LOG(LogCarla, Warning, TEXT("GameInstance not found, parallel world system disabled"));
+        bParallelWorldsEnabled = false;
+    }
+
+    // 在初始化平行世界系统后添加
+    if (bParallelWorldsEnabled)
+    {
+        // 验证碰撞通道配置
+        if (!FParallelWorldUtils::ValidateCollisionChannelConfig())
+        {
+            UE_LOG(LogCarla, Warning, 
+                TEXT("Parallel world collision channels configuration issue detected. "
+                    "Some features may not work correctly."));
+        }
     }
 }
 

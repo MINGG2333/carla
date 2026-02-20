@@ -27,4 +27,7 @@ public:
     
     // 转换WorldID到渲染层掩码
     static int32 WorldIDToRenderLayerMask(int32 WorldID);
+    
+    // 验证碰撞通道配置（仅用于调试）
+    static bool ValidateCollisionChannelConfig();
 };

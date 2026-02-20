@@ -109,6 +109,10 @@ void UCarlaSettings::LoadSettings()
   CurrentFileName = TEXT("");
   // Load settings from project Config folder if present.
   LoadSettingsFromFile(FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("CarlaSettings.ini")), false);
+    
+    // 加载平行世界配置
+    LoadParallelWorldSettings();
+    
   // Load settings given by command-line arg if provided.
   {
     FString FilePath;
@@ -156,6 +160,56 @@ void UCarlaSettings::LoadSettings()
       bDisableRendering = true;
     }
   }
+}
+
+void UCarlaSettings::LoadParallelWorldSettings()
+{
+    const FString ConfigFile = FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("CarlaSettings.ini"));
+    
+    FIniFile Config;
+    if (FPaths::FileExists(ConfigFile))
+    {
+        Config.Read(ConfigFile);
+    }
+    else
+    {
+        // 如果配置文件不存在，保存默认配置
+        SaveParallelWorldSettings();
+        return;
+    }
+    
+    // 使用FIniFile读取配置
+    Config.GetBool(TEXT("ParallelWorldSettings"), TEXT("bEnableParallelWorlds"), 
+                   ParallelWorldSettings.bEnableParallelWorlds);
+    Config.GetInt(TEXT("ParallelWorldSettings"), TEXT("MaxParallelWorlds"), 
+                  ParallelWorldSettings.MaxParallelWorlds);
+    Config.GetBool(TEXT("ParallelWorldSettings"), TEXT("bAutoAssignToDefaultWorld"), 
+                   ParallelWorldSettings.bAutoAssignToDefaultWorld);
+    Config.GetBool(TEXT("ParallelWorldSettings"), TEXT("bDebugLogging"), 
+                   ParallelWorldSettings.bDebugLogging);
+}
+
+void UCarlaSettings::SaveParallelWorldSettings()
+{
+    const FString ConfigFile = FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("CarlaSettings.ini"));
+    
+    FIniFile Config;
+    if (FPaths::FileExists(ConfigFile))
+    {
+        Config.Read(ConfigFile);
+    }
+    
+    // 使用FIniFile设置配置
+    Config.SetBool(TEXT("ParallelWorldSettings"), TEXT("bEnableParallelWorlds"), 
+                   ParallelWorldSettings.bEnableParallelWorlds);
+    Config.SetInt(TEXT("ParallelWorldSettings"), TEXT("MaxParallelWorlds"), 
+                  ParallelWorldSettings.MaxParallelWorlds);
+    Config.SetBool(TEXT("ParallelWorldSettings"), TEXT("bAutoAssignToDefaultWorld"), 
+                   ParallelWorldSettings.bAutoAssignToDefaultWorld);
+    Config.SetBool(TEXT("ParallelWorldSettings"), TEXT("bDebugLogging"), 
+                   ParallelWorldSettings.bDebugLogging);
+    
+    Config.Write(ConfigFile);
 }
 
 void UCarlaSettings::LoadSettingsFromString(const FString &INIFileContents)
