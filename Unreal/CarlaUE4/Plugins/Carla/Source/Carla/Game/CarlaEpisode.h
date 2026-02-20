@@ -16,6 +16,9 @@
 #include "Carla/Game/FrameData.h"
 #include "Carla/Sensor/SensorManager.h"
 
+#include "Carla/Game/ParallelWorldManager.h"
+#include "Carla/Game/ParallelWorldConfig.h"
+
 #include "GameFramework/Pawn.h"
 #include "Materials/MaterialParameterCollectionInstance.h"
 
@@ -247,34 +250,42 @@ public:
       EAttachmentType InAttachmentType = EAttachmentType::Rigid);
 
   /// @copydoc FActorDispatcher::DestroyActor(AActor*)
-  UFUNCTION(BlueprintCallable)
-  bool DestroyActor(AActor *Actor)
-  {
-    FCarlaActor* CarlaActor = FindCarlaActor(Actor);
-    if (CarlaActor)
+    UFUNCTION(BlueprintCallable)
+    bool DestroyActor(AActor *Actor)
     {
-      carla::rpc::ActorId ActorId = CarlaActor->GetActorId();
-      return DestroyActor(ActorId);
-    }
-    return false;
-  }
-
-  bool DestroyActor(carla::rpc::ActorId ActorId)
-  {
-    if (bIsPrimaryServer)
-    {
-      GetFrameData().AddEvent(
-          CarlaRecorderEventDel{ActorId});
-    }
-    if (Recorder->IsEnabled())
-    {
-      // recorder event
-      CarlaRecorderEventDel RecEvent{ActorId};
-      Recorder->AddEvent(std::move(RecEvent));
+        FCarlaActor* CarlaActor = FindCarlaActor(Actor);
+        if (CarlaActor)
+        {
+            carla::rpc::ActorId ActorId = CarlaActor->GetActorId();
+            return DestroyActor(ActorId);
+        }
+        return false;
     }
 
-    return ActorDispatcher->DestroyActor(ActorId);
-  }
+    /// 修改DestroyActor以集成平行世界（内联实现）
+    bool DestroyActor(carla::rpc::ActorId ActorId)
+    {
+        // 如果平行世界启用，先从管理器中注销
+        if (bParallelWorldsEnabled && ParallelWorldManager)
+        {
+            ParallelWorldManager->UnregisterActor(ActorId);
+        }
+        
+        // 原有逻辑保持不变
+        if (bIsPrimaryServer)
+        {
+            GetFrameData().AddEvent(
+                CarlaRecorderEventDel{ActorId});
+        }
+        if (Recorder->IsEnabled())
+        {
+            // recorder event
+            CarlaRecorderEventDel RecEvent{ActorId};
+            Recorder->AddEvent(std::move(RecEvent));
+        }
+
+        return ActorDispatcher->DestroyActor(ActorId);
+    }
 
   void PutActorToSleep(carla::rpc::ActorId ActorId)
   {
@@ -328,6 +339,51 @@ public:
 
   bool bIsPrimaryServer = true;
 
+    // ===========================================================================
+    // -- Parallel World Functions ------------------------------------------------
+    // ===========================================================================
+    
+    /// 获取平行世界管理器
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    UParallelWorldManager* GetParallelWorldManager() const;
+    
+    /// 创建平行世界
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    int32 CreateParallelWorld(const FString& WorldName = TEXT(""));
+    
+    /// 销毁平行世界
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    bool DestroyParallelWorld(int32 WorldID);
+    
+    /// 获取所有可用的世界ID
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    TArray<int32> GetAvailableWorlds() const;
+    
+    /// 获取平行世界数量
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    int32 GetParallelWorldCount() const;
+    
+    /// 获取Actor所在的世界ID
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    int32 GetActorWorldID(FCarlaActor::IdType ActorId) const;
+    
+    /// 带有WorldID参数的Actor生成函数
+    TPair<EActorSpawnResultStatus, FCarlaActor*> SpawnActorWithInfo(
+        const FTransform &Transform,
+        FActorDescription thisActorDescription,
+        FCarlaActor::IdType DesiredId,
+        int32 WorldID);  // 新重载版本，带WorldID参数
+    
+    /// 带有WorldID参数的Blueprint版本
+    UFUNCTION(BlueprintCallable, Category="Parallel World")
+    AActor *SpawnActorInWorld(
+        const FTransform &Transform,
+        FActorDescription ActorDescription,
+        int32 WorldID = 0)
+    {
+        return SpawnActorWithInfo(Transform, std::move(ActorDescription), 0, WorldID).Value->GetActor();
+    }
+    
 private:
 
   friend class ACarlaGameModeBase;
@@ -391,4 +447,15 @@ private:
   FFrameData FrameData;
 
   FSensorManager SensorManager;
+
+    // ===========================================================================
+    // -- Parallel World Members -------------------------------------------------
+    // ===========================================================================
+    
+    // 平行世界管理器
+    UPROPERTY()
+    UParallelWorldManager* ParallelWorldManager = nullptr;
+    
+    // 是否启用平行世界（从配置读取）
+    bool bParallelWorldsEnabled = false;
 };

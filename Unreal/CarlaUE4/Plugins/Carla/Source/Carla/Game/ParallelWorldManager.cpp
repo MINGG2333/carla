@@ -5,20 +5,6 @@
 #include "Carla/Actor/ActorRegistry.h"
 #include "Carla/Game/ParallelWorldUtils.h"
 
-// 单例实例
-UParallelWorldManager* UParallelWorldManager::GParallelWorldManager = nullptr;
-
-UParallelWorldManager* UParallelWorldManager::GetInstance()
-{
-    if (!GParallelWorldManager)
-    {
-        // 创建一个新的实例
-        GParallelWorldManager = NewObject<UParallelWorldManager>();
-        GParallelWorldManager->AddToRoot();  // 防止垃圾回收
-    }
-    return GParallelWorldManager;
-}
-
 UParallelWorldManager::UParallelWorldManager()
     : NextWorldID(1)  // 0是默认世界
     , bEnabled(true)

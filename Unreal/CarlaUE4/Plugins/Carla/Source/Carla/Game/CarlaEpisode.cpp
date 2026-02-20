@@ -400,6 +400,39 @@ void UCarlaEpisode::InitializeAtBeginPlay()
       ActorDispatcher->RegisterActor(*Actor, Description);
     }
   }
+    
+    // ===========================================================================
+    // -- Initialize Parallel World System ---------------------------------------
+    // ===========================================================================
+    
+    // 加载配置
+    FParallelWorldConfig& Config = FParallelWorldConfig::Get();
+    if (!Config.LoadConfig())
+    {
+        // 如果配置文件不存在，保存默认配置
+        Config.SaveConfig();
+    }
+    
+    // 应用配置
+    bParallelWorldsEnabled = Config.IsParallelWorldEnabled();
+    
+    if (bParallelWorldsEnabled)
+    {
+        // 创建平行世界管理器
+        ParallelWorldManager = NewObject<UParallelWorldManager>(this);
+        ParallelWorldManager->Initialize();
+        
+        UE_LOG(LogCarla, Log, TEXT("Parallel world system initialized. Max worlds: %d"), 
+               Config.GetMaxParallelWorlds());
+        
+        // 初始化碰撞通道
+        // 这里可以调用ParallelWorldManager中的初始化函数
+        // 或者通过配置设置碰撞通道
+    }
+    else
+    {
+        UE_LOG(LogCarla, Log, TEXT("Parallel world system is disabled by configuration"));
+    }
 }
 
 void UCarlaEpisode::EndPlay(void)
@@ -467,4 +500,104 @@ TPair<EActorSpawnResultStatus, FCarlaActor*> UCarlaEpisode::SpawnActorWithInfo(
   }
 
   return result;
+}
+
+// ===========================================================================
+// -- Parallel World Functions Implementation ---------------------------------
+// ===========================================================================
+
+TPair<EActorSpawnResultStatus, FCarlaActor*> UCarlaEpisode::SpawnActorWithInfo(
+    const FTransform &Transform,
+    FActorDescription thisActorDescription,
+    FCarlaActor::IdType DesiredId,
+    int32 WorldID)
+{
+    // 首先调用原有的SpawnActorWithInfo
+    auto Result = SpawnActorWithInfo(Transform, thisActorDescription, DesiredId);
+    
+    // 如果创建成功，并且平行世界系统启用，则注册Actor到指定世界
+    if (Result.Key == EActorSpawnResultStatus::Success && 
+        bParallelWorldsEnabled && 
+        ParallelWorldManager)
+    {
+        FCarlaActor* CarlaActor = Result.Value;
+        if (CarlaActor)
+        {
+            // 注册Actor到平行世界管理器
+            ParallelWorldManager->RegisterActor(
+                CarlaActor->GetActorId(), 
+                WorldID, 
+                CarlaActor->GetActor()
+            );
+            
+            UE_LOG(LogCarla, Verbose, 
+                TEXT("Spawned actor %d in world %d"), 
+                CarlaActor->GetActorId(), WorldID);
+        }
+    }
+    
+    return Result;
+}
+
+UParallelWorldManager* UCarlaEpisode::GetParallelWorldManager() const
+{
+    return ParallelWorldManager;
+}
+
+int32 UCarlaEpisode::CreateParallelWorld(const FString& WorldName)
+{
+    if (!bParallelWorldsEnabled || !ParallelWorldManager)
+    {
+        UE_LOG(LogCarla, Warning, TEXT("Parallel worlds are not enabled"));
+        return -1;
+    }
+    
+    return ParallelWorldManager->CreateWorld(WorldName);
+}
+
+bool UCarlaEpisode::DestroyParallelWorld(int32 WorldID)
+{
+    if (!bParallelWorldsEnabled || !ParallelWorldManager)
+    {
+        UE_LOG(LogCarla, Warning, TEXT("Parallel worlds are not enabled"));
+        return false;
+    }
+    
+    if (WorldID == 0)
+    {
+        UE_LOG(LogCarla, Warning, TEXT("Cannot destroy default world (ID=0)"));
+        return false;
+    }
+    
+    return ParallelWorldManager->DestroyWorld(WorldID);
+}
+
+TArray<int32> UCarlaEpisode::GetAvailableWorlds() const
+{
+    if (!bParallelWorldsEnabled || !ParallelWorldManager)
+    {
+        return TArray<int32>();
+    }
+    
+    return ParallelWorldManager->GetAllWorldIDs();
+}
+
+int32 UCarlaEpisode::GetParallelWorldCount() const
+{
+    if (!bParallelWorldsEnabled || !ParallelWorldManager)
+    {
+        return 0;
+    }
+    
+    return ParallelWorldManager->GetWorldCount();
+}
+
+int32 UCarlaEpisode::GetActorWorldID(FCarlaActor::IdType ActorId) const
+{
+    if (!bParallelWorldsEnabled || !ParallelWorldManager)
+    {
+        return 0; // 默认世界
+    }
+    
+    return ParallelWorldManager->GetActorWorldID(ActorId);
 }

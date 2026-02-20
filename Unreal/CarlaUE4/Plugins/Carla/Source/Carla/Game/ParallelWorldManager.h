@@ -19,9 +19,7 @@ class CARLA_API UParallelWorldManager : public UObject
     GENERATED_BODY()
     
 public:
-    // 单例访问
-    UFUNCTION(BlueprintCallable, Category="Parallel World")
-    static UParallelWorldManager* GetInstance();
+    UParallelWorldManager();
     
     // 初始化/清理
     UFUNCTION(BlueprintCallable, Category="Parallel World")
