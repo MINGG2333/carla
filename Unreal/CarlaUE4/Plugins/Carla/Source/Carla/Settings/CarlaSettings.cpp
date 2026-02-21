@@ -110,7 +110,7 @@ void UCarlaSettings::LoadSettings()
   // Load settings from project Config folder if present.
   LoadSettingsFromFile(FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("CarlaSettings.ini")), false);
     
-    // 加载平行世界配置
+    // 加载 Parallel World 配置
     LoadParallelWorldSettings();
     
   // Load settings given by command-line arg if provided.
@@ -164,7 +164,7 @@ void UCarlaSettings::LoadSettings()
 
 void UCarlaSettings::LoadParallelWorldSettings()
 {
-    const FString ConfigFile = FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("CarlaSettings.ini"));
+    const FString ConfigFile = FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("ParallelWorld.ini"));
     
     FIniFile Config;
     if (FPaths::FileExists(ConfigFile))
@@ -191,7 +191,7 @@ void UCarlaSettings::LoadParallelWorldSettings()
 
 void UCarlaSettings::SaveParallelWorldSettings()
 {
-    const FString ConfigFile = FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("CarlaSettings.ini"));
+    const FString ConfigFile = FPaths::Combine(FPaths::ProjectConfigDir(), TEXT("ParallelWorld.ini"));
     
     FIniFile Config;
     if (FPaths::FileExists(ConfigFile))

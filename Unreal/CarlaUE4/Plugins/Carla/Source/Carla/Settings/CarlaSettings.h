@@ -24,7 +24,7 @@ class CARLA_API UCarlaSettings : public UObject
   GENERATED_BODY()
     
 public:
-    // 平行世界设置
+    // Parallel World 设置
     UPROPERTY(EditAnywhere, Category="Parallel World")
     FParallelWorldSettings ParallelWorldSettings;
 
