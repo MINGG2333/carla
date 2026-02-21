@@ -437,6 +437,78 @@ namespace detail {
     return _client.GetNamesOfAllObjects();
   }
 
+// =============================================================================
+// -- Parallel World Methods ---------------------------------------------------
+// =============================================================================
+
+int32_t Simulator::CreateParallelWorld(const std::string &world_name) {
+    return _client.CreateParallelWorld(world_name);
+}
+
+bool Simulator::DestroyParallelWorld(int32_t world_id) {
+    return _client.DestroyParallelWorld(world_id);
+}
+
+std::vector<int32_t> Simulator::GetAvailableWorlds() const {
+    return _client.GetAvailableWorlds();
+}
+
+int32_t Simulator::GetActorWorldID(ActorId actor_id) const {
+    return _client.GetActorWorldID(actor_id);
+}
+
+SharedPtr<Actor> Simulator::SpawnActorInWorld(
+    const ActorBlueprint &blueprint,
+    const geom::Transform &transform,
+    int32_t world_id) {
+    
+    // 验证世界ID
+    auto available_worlds = GetAvailableWorlds();
+    if (std::find(available_worlds.begin(), available_worlds.end(), world_id) == available_worlds.end()) {
+        throw_exception(std::runtime_error("Invalid world ID: " + std::to_string(world_id)));
+    }
+    
+    rpc::Actor actor;
+    try {
+        actor = _client.SpawnActorInWorld(
+            blueprint.MakeActorDescription(),
+            transform,
+            world_id);
+    } catch (const std::exception &e) {
+        log_error("failed to spawn actor in world", world_id, ':', e.what());
+        throw;
+    }
+    
+    DEBUG_ASSERT(_episode != nullptr);
+    _episode->RegisterActor(actor);
+    
+    // 使用GarbageCollectionPolicy::Inherit，让模拟器决定垃圾回收策略
+    auto result = ActorFactory::MakeActor(GetCurrentEpisode(), actor, GarbageCollectionPolicy::Inherit);
+    
+    log_debug(
+        result->GetDisplayId(),
+        "created in world", world_id,
+        GetGarbageCollectionPolicy() == GarbageCollectionPolicy::Enabled ? "with" : "without",
+        "garbage collection");
+    
+    return result;
+}
+
+bool Simulator::MoveActorToWorld(ActorId actor_id, int32_t new_world_id) {
+    return _client.MoveActorToWorld(actor_id, new_world_id);
+}
+
+bool Simulator::IsParallelWorldEnabled() const {
+    try {
+        auto worlds = GetAvailableWorlds();
+        // 如果可用世界数量大于1（除了默认世界0），则认为平行世界已启用
+        return worlds.size() > 1;
+    } catch (const std::exception &) {
+        // 如果RPC调用失败，可能服务器不支持平行世界功能
+        return false;
+    }
+}
+
 } // namespace detail
 } // namespace client
 } // namespace carla

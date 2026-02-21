@@ -230,6 +230,21 @@ namespace client {
 
     std::vector<std::string> GetNamesOfAllObjects() const;
 
+// =============================================================================
+// -- Parallel World Methods ---------------------------------------------------
+// =============================================================================
+
+    int32_t CreateParallelWorld(const std::string &world_name = "");
+    bool DestroyParallelWorld(int32_t world_id);
+    std::vector<int32_t> GetAvailableWorlds() const;
+    int32_t GetActorWorldID(ActorId actor_id) const;
+    SharedPtr<Actor> SpawnActorInWorld(
+        const ActorBlueprint &blueprint,
+        const geom::Transform &transform,
+        int32_t world_id);
+    bool MoveActorToWorld(ActorId actor_id, int32_t new_world_id);
+    bool IsParallelWorldEnabled() const;
+
   private:
 
     detail::EpisodeProxy _episode;

@@ -313,3 +313,39 @@ TArray<int32> UParallelWorldManager::GetAllWorldIDs() const
     WorldPropertiesMap.GetKeys(WorldIDs);
     return WorldIDs;
 }
+
+bool UParallelWorldManager::MoveActorToWorld(FCarlaActor::IdType ActorId, int32_t NewWorldID, AActor* Actor)
+{
+    if (!bEnabled || !bInitialized)
+    {
+        return false;
+    }
+    
+    // 检查新世界是否存在
+    if (!WorldPropertiesMap.Contains(NewWorldID))
+    {
+        UE_LOG(LogCarla, Warning, TEXT("World %d does not exist"), NewWorldID);
+        return false;
+    }
+    
+    // 获取Actor当前所在世界
+    int32* CurrentWorldIDPtr = ActorToWorldMap.Find(ActorId);
+    if (!CurrentWorldIDPtr)
+    {
+        // Actor未注册，先注册到新世界
+        RegisterActor(ActorId, NewWorldID, Actor);
+        return true;
+    }
+    
+    int32 CurrentWorldID = *CurrentWorldIDPtr;
+    
+    if (CurrentWorldID == NewWorldID)
+    {
+        return true; // 已经在目标世界
+    }
+    
+    // 调用现有的UpdateActorWorld方法
+    UpdateActorWorld(ActorId, NewWorldID, Actor);
+    
+    return true;
+}

@@ -73,6 +73,9 @@ public:
     // 应用世界设置到actor（如果提供了actor指针）
     void ApplyWorldSettingsToActor(AActor* Actor, int32 WorldID);
     
+    // 移动Actor到另一个世界
+    bool MoveActorToWorld(FCarlaActor::IdType ActorId, int32_t NewWorldID, AActor* Actor = nullptr);
+
 private:
     // 私有构造函数
     UParallelWorldManager();

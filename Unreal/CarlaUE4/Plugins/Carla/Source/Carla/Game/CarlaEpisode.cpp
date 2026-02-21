@@ -659,3 +659,44 @@ int32 UCarlaEpisode::GetActorWorldID(FCarlaActor::IdType ActorId) const
     
     return ParallelWorldManager->GetActorWorldID(ActorId);
 }
+
+bool UCarlaEpisode::MoveActorToWorld(FCarlaActor::IdType ActorId, int32_t NewWorldID)
+{
+    if (!bParallelWorldsEnabled || !ParallelWorldManager)
+    {
+        UE_LOG(LogCarla, Warning, TEXT("Parallel worlds are not enabled"));
+        return false;
+    }
+    
+    // 查找Actor
+    FCarlaActor* CarlaActor = FindCarlaActor(ActorId);
+    if (!CarlaActor)
+    {
+        UE_LOG(LogCarla, Warning, TEXT("Actor %d not found"), ActorId);
+        return false;
+    }
+    
+    // 获取当前世界ID
+    int32_t CurrentWorldID = GetActorWorldID(ActorId);
+    
+    if (CurrentWorldID == NewWorldID)
+    {
+        UE_LOG(LogCarla, Verbose, TEXT("Actor %d is already in world %d"), ActorId, NewWorldID);
+        return true;
+    }
+    
+    // 检查目标世界是否存在
+    if (!ParallelWorldManager->IsValidWorld(NewWorldID))
+    {
+        UE_LOG(LogCarla, Warning, TEXT("World %d does not exist"), NewWorldID);
+        return false;
+    }
+    
+    // 更新Actor到新世界
+    ParallelWorldManager->UpdateActorWorld(ActorId, NewWorldID, CarlaActor->GetActor());
+    
+    UE_LOG(LogCarla, Log, TEXT("Moved actor %d from world %d to world %d"), 
+           ActorId, CurrentWorldID, NewWorldID);
+    
+    return true;
+}

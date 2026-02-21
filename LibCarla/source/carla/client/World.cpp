@@ -383,5 +383,40 @@ namespace client {
     }
   }
 
+// =============================================================================
+// -- Parallel World Methods ---------------------------------------------------
+// =============================================================================
+
+int32_t World::CreateParallelWorld(const std::string &world_name) {
+    return _episode.Lock()->CreateParallelWorld(world_name);
+}
+
+bool World::DestroyParallelWorld(int32_t world_id) {
+    return _episode.Lock()->DestroyParallelWorld(world_id);
+}
+
+std::vector<int32_t> World::GetAvailableWorlds() const {
+    return _episode.Lock()->GetAvailableWorlds();
+}
+
+int32_t World::GetActorWorldID(ActorId actor_id) const {
+    return _episode.Lock()->GetActorWorldID(actor_id);
+}
+
+SharedPtr<Actor> World::SpawnActorInWorld(
+    const ActorBlueprint &blueprint,
+    const geom::Transform &transform,
+    int32_t world_id) {
+    return _episode.Lock()->SpawnActorInWorld(blueprint, transform, world_id);
+}
+
+bool World::MoveActorToWorld(ActorId actor_id, int32_t new_world_id) {
+    return _episode.Lock()->MoveActorToWorld(actor_id, new_world_id);
+}
+
+bool World::IsParallelWorldEnabled() const {
+    return _episode.Lock()->IsParallelWorldEnabled();
+}
+
 } // namespace client
 } // namespace carla

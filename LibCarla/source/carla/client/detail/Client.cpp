@@ -667,6 +667,37 @@ namespace detail {
     return _pimpl->CallAndWait<return_t>("cast_ray", start_location, end_location);
   }
 
+// =============================================================================
+// -- Parallel World Methods ---------------------------------------------------
+// =============================================================================
+
+int32_t Client::CreateParallelWorld(const std::string &world_name) {
+    return _pimpl->CallAndWait<int32_t>("create_parallel_world", world_name);
+}
+
+bool Client::DestroyParallelWorld(int32_t world_id) {
+    return _pimpl->CallAndWait<bool>("destroy_parallel_world", world_id);
+}
+
+std::vector<int32_t> Client::GetAvailableWorlds() const {
+    return _pimpl->CallAndWait<std::vector<int32_t>>("get_available_worlds");
+}
+
+int32_t Client::GetActorWorldID(ActorId actor_id) const {
+    return _pimpl->CallAndWait<int32_t>("get_actor_world_id", actor_id);
+}
+
+rpc::Actor Client::SpawnActorInWorld(
+    const rpc::ActorDescription &description,
+    const geom::Transform &transform,
+    int32_t world_id) {
+    return _pimpl->CallAndWait<rpc::Actor>("spawn_actor_in_world", description, transform, world_id);
+}
+
+bool Client::MoveActorToWorld(ActorId actor_id, int32_t new_world_id) {
+    return _pimpl->CallAndWait<bool>("move_actor_to_world", actor_id, new_world_id);
+}
+
 } // namespace detail
 } // namespace client
 } // namespace carla

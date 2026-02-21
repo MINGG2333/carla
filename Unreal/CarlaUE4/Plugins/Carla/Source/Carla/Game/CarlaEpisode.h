@@ -262,7 +262,7 @@ public:
         return false;
     }
 
-    /// 修改DestroyActor以集成平行世界（内联实现）
+    /// 修改DestroyActor以集成 Parallel World （内联实现）
     bool DestroyActor(carla::rpc::ActorId ActorId)
     {
         // 如果平行世界启用，先从管理器中注销
@@ -383,6 +383,12 @@ public:
     {
         return SpawnActorWithInfo(Transform, std::move(ActorDescription), 0, WorldID).Value->GetActor();
     }
+    
+    // 检查平行世界是否启用
+    bool IsParallelWorldEnabled() const { return bParallelWorldsEnabled; }
+    
+    // 移动Actor到另一个世界（需要实现）
+    bool MoveActorToWorld(FCarlaActor::IdType ActorId, int32_t NewWorldID);
     
 private:
 

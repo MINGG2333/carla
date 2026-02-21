@@ -2409,6 +2409,160 @@ void FCarlaServer::FPimpl::BindActions()
     return URayTracer::CastRay(StartLocation, EndLocation, World);
   };
 
+// ===========================================================================
+// -- Parallel World RPC Functions -------------------------------------------
+// ===========================================================================
+
+BIND_SYNC(create_parallel_world) << [this](const std::string &world_name) -> R<int32_t>
+{
+    REQUIRE_CARLA_EPISODE();
+    
+    if (!Episode->IsParallelWorldEnabled())
+    {
+        RESPOND_ERROR("Parallel world system is not enabled");
+    }
+    
+    int32_t world_id = Episode->CreateParallelWorld(cr::ToFString(world_name));
+    if (world_id < 0)
+    {
+        RESPOND_ERROR("Failed to create parallel world");
+    }
+    
+    UE_LOG(LogCarla, Log, TEXT("Created parallel world %d: %s"), world_id, *cr::ToFString(world_name));
+    return world_id;
+};
+
+BIND_SYNC(destroy_parallel_world) << [this](int32_t world_id) -> R<bool>
+{
+    REQUIRE_CARLA_EPISODE();
+    
+    if (!Episode->IsParallelWorldEnabled())
+    {
+        RESPOND_ERROR("Parallel world system is not enabled");
+    }
+    
+    if (!Episode->DestroyParallelWorld(world_id))
+    {
+        RESPOND_ERROR("Failed to destroy parallel world");
+    }
+    
+    UE_LOG(LogCarla, Log, TEXT("Destroyed parallel world %d"), world_id);
+    return true;
+};
+
+BIND_SYNC(get_available_worlds) << [this]() -> R<std::vector<int32_t>>
+{
+    REQUIRE_CARLA_EPISODE();
+    
+    if (!Episode->IsParallelWorldEnabled())
+    {
+        // 如果平行世界未启用，只返回默认世界
+        return std::vector<int32_t>{0};
+    }
+    
+    return Episode->GetAvailableWorlds();
+};
+
+BIND_SYNC(get_actor_world_id) << [this](cr::ActorId actor_id) -> R<int32_t>
+{
+    REQUIRE_CARLA_EPISODE();
+    
+    if (!Episode->IsParallelWorldEnabled())
+    {
+        // 如果平行世界未启用，所有Actor都在默认世界
+        return 0;
+    }
+    
+    return Episode->GetActorWorldID(actor_id);
+};
+
+BIND_SYNC(spawn_actor_in_world) << [this](
+    cr::ActorDescription Description,
+    const cr::Transform &Transform,
+    int32_t world_id) -> R<cr::Actor>
+{
+    REQUIRE_CARLA_EPISODE();
+    
+    if (!Episode->IsParallelWorldEnabled())
+    {
+        RESPOND_ERROR("Parallel world system is not enabled");
+    }
+    
+    // 验证世界ID有效性
+    auto available_worlds = Episode->GetAvailableWorlds();
+    if (!available_worlds.Contains(world_id))
+    {
+        RESPOND_ERROR("Invalid world ID");
+    }
+    
+    // 使用带WorldID参数的SpawnActorWithInfo
+    auto Result = Episode->SpawnActorWithInfo(Transform, std::move(Description), 0, world_id);
+    
+    if (Result.Key != EActorSpawnResultStatus::Success)
+    {
+        UE_LOG(LogCarla, Error, TEXT("Actor not Spawned in world %d"), world_id);
+        RESPOND_ERROR_FSTRING(FActorSpawnResult::StatusToString(Result.Key));
+    }
+    
+    ALargeMapManager* LargeMap = UCarlaStatics::GetLargeMapManager(Episode->GetWorld());
+    if(LargeMap)
+    {
+        LargeMap->OnActorSpawned(*Result.Value);
+    }
+    
+    UE_LOG(LogCarla, Log, TEXT("Spawned actor %d in world %d"), 
+           Result.Value->GetActorId(), world_id);
+    
+    return Episode->SerializeActor(Result.Value);
+};
+
+BIND_SYNC(move_actor_to_world) << [this](
+    cr::ActorId actor_id,
+    int32_t new_world_id) -> R<bool>
+{
+    REQUIRE_CARLA_EPISODE();
+    
+    if (!Episode->IsParallelWorldEnabled())
+    {
+        RESPOND_ERROR("Parallel world system is not enabled");
+    }
+    
+    FCarlaActor* CarlaActor = Episode->FindCarlaActor(actor_id);
+    if (!CarlaActor)
+    {
+        return RespondError(
+            "move_actor_to_world",
+            ECarlaServerResponse::ActorNotFound,
+            " Actor Id: " + FString::FromInt(actor_id));
+    }
+    
+    // 验证目标世界ID
+    auto available_worlds = Episode->GetAvailableWorlds();
+    if (!available_worlds.Contains(new_world_id))
+    {
+        RESPOND_ERROR("Invalid target world ID");
+    }
+    
+    // 获取当前世界ID
+    int32_t current_world_id = Episode->GetActorWorldID(actor_id);
+    
+    if (current_world_id == new_world_id)
+    {
+        return true; // 已经在目标世界
+    }
+    
+    // 更新Actor到新世界
+    // 注意：这里需要修改ParallelWorldManager以支持移动已存在的Actor
+    UParallelWorldManager* ParallelWorldManager = Episode->GetParallelWorldManager();
+    if (ParallelWorldManager)
+    {
+        ParallelWorldManager->UpdateActorWorld(actor_id, new_world_id, CarlaActor->GetActor());
+        UE_LOG(LogCarla, Log, TEXT("Moved actor %d from world %d to world %d"), 
+               actor_id, current_world_id, new_world_id);
+    }
+    
+    return true;
+};
 }
 
 // =============================================================================

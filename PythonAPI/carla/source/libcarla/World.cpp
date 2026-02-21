@@ -354,6 +354,61 @@ void export_world() {
     .def("apply_textures_to_objects", +[](cc::World &self, boost::python::list &list, const cr::TextureColor& diffuse_texture, const cr::TextureFloatColor& emissive_texture, const cr::TextureFloatColor& normal_texture, const cr::TextureFloatColor& ao_roughness_metallic_emissive_texture) {
         self.ApplyTexturesToObjects(PythonLitstToVector<std::string>(list), diffuse_texture, emissive_texture, normal_texture, ao_roughness_metallic_emissive_texture);
       }, (arg("objects_name_list"), arg("diffuse_texture"), arg("emissive_texture"), arg("normal_texture"), arg("ao_roughness_metallic_emissive_texture")))
+    
+    // =========================================================================
+    // -- Parallel World Functions ---------------------------------------------
+    // =========================================================================
+    
+    .def("create_parallel_world", 
+        +[](cc::World &self, const std::string &world_name) -> int32_t {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.CreateParallelWorld(world_name);
+        }, 
+        (arg("world_name")=""))
+    
+    .def("destroy_parallel_world", 
+        +[](cc::World &self, int32_t world_id) -> bool {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.DestroyParallelWorld(world_id);
+        }, 
+        (arg("world_id")))
+    
+    .def("get_available_worlds", 
+        +[](const cc::World &self) -> std::vector<int32_t> {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.GetAvailableWorlds();
+        })
+    
+    .def("get_actor_world_id", 
+        +[](const cc::World &self, cc::ActorId actor_id) -> int32_t {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.GetActorWorldID(actor_id);
+        }, 
+        (arg("actor_id")))
+    
+    .def("spawn_actor_in_world", 
+        +[](cc::World &self,
+            const cc::ActorBlueprint &blueprint,
+            const cg::Transform &transform,
+            int32_t world_id) -> SharedPtr<cc::Actor> {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.SpawnActorInWorld(blueprint, transform, world_id);
+        },
+        (arg("blueprint"), arg("transform"), arg("world_id")))
+    
+    .def("move_actor_to_world", 
+        +[](cc::World &self, cc::ActorId actor_id, int32_t new_world_id) -> bool {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.MoveActorToWorld(actor_id, new_world_id);
+        }, 
+        (arg("actor_id"), arg("new_world_id")))
+    
+    .def("is_parallel_world_enabled", 
+        +[](const cc::World &self) -> bool {
+            carla::PythonUtil::ReleaseGIL unlock;
+            return self.IsParallelWorldEnabled();
+        })
+    
     .def(self_ns::str(self_ns::self))
   ;
 
