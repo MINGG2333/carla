@@ -13,6 +13,8 @@
 
 UWheeledVehicleMovementComponentNW::UWheeledVehicleMovementComponentNW(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
+UE_LOG(LogTemp, Log, TEXT("jxy: UWheeledVehicleMovementComponentNW."));
+
 	// grab default values from physx
 	PxVehicleEngineData DefEngineData;
 	EngineSetup.MOI = DefEngineData.mMOI;
@@ -272,6 +274,7 @@ void UWheeledVehicleMovementComponentNW::SetupVehicle()
 
 void UWheeledVehicleMovementComponentNW::UpdateSimulation(float DeltaTime)
 {
+	UE_LOG(LogTemp, Log, TEXT("jxy This is UWheeledVehicleMovementComponentNW::UpdateSimulation."));
 	if (PVehicleDrive == nullptr)
 		return;
 

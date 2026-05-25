@@ -22,6 +22,7 @@ void UActorDispatcher::Bind(FActorDefinition Definition, SpawnFunctionType Funct
     Definitions.Emplace(Definition);
     SpawnFunctions.Emplace(Functor);
     Classes.Emplace(Definition.Class);
+    UE_LOG(LogCarla, Log, TEXT("jxy: definition '%s' "), *Definition.Id);
   }
   else
   {
@@ -50,7 +51,7 @@ TPair<EActorSpawnResultStatus, FCarlaActor*> UActorDispatcher::SpawnActor(
     return MakeTuple(EActorSpawnResultStatus::InvalidDescription, nullptr);
   }
 
-  UE_LOG(LogCarla, Log, TEXT("Spawning actor '%s'"), *Description.Id);
+  UE_LOG(LogCarla, Log, TEXT("jxy: Spawning actor '%s' (UId=%d)"), *Description.Id, Description.UId);
 
   Description.Class = Classes[Description.UId - 1];
   FActorSpawnResult Result = SpawnFunctions[Description.UId - 1](Transform, Description);

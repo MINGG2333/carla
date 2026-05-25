@@ -212,7 +212,8 @@ public:
 
 private:
 
-  UPROPERTY()
+  // 忘了为什么加 VisibleAnywhere
+  UPROPERTY(VisibleAnywhere)
   ACarlaWheeledVehicle *Vehicle = nullptr;
 
   UPROPERTY()

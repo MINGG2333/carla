@@ -120,6 +120,7 @@ UCLASS(ClassGroup = (Physics), meta = (BlueprintSpawnableComponent), hidecategor
 class CARLA_API UWheeledVehicleMovementComponentNW : public UWheeledVehicleMovementComponent
 {
 	GENERATED_UCLASS_BODY()
+	int jxy=1;
 
 		/** Engine */
 	UPROPERTY(EditAnywhere, Category = MechanicalSetup)

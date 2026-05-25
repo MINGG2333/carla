@@ -161,6 +161,8 @@ void ACarlaWheeledVehicle::BeginPlay()
 
   if (MovementComponent)
   {
+    UE_LOG(LogCarla, Log, TEXT("jxy: MovementComponent in BeginPlay'%d' "), 1);
+
     check(MovementComponent != nullptr);
 
     // Setup Tire Configs with default value. This is needed to avoid getting
@@ -324,6 +326,15 @@ void ACarlaWheeledVehicle::FlushVehicleControl()
     AckermannController.RunLoop(InputControl.Control);
   }
 
+	if (GetWorld()->IsServer()) // True
+  {
+    UE_LOG(LogCarla, Log, TEXT("jxy: FlushVehicleControl on server '%d' "), 330);
+      // 物理计算逻辑
+  }
+	else
+	{
+    UE_LOG(LogCarla, Log, TEXT("jxy: FlushVehicleControl on client '%d' "), 330);
+	}
   BaseMovementComponent->ProcessControl(InputControl.Control);
   InputControl.Control.bReverse = InputControl.Control.Gear < 0;
   LastAppliedControl = InputControl.Control;
