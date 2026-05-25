@@ -47,3 +47,6 @@ function move_if_changed {
 }
 
 CARLA_BUILD_CONCURRENCY=`nproc --all`
+
+source /home/mingg/miniconda3/etc/profile.d/conda.sh
+conda activate carla14
