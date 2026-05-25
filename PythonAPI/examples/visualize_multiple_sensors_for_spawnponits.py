@@ -74,7 +74,7 @@ class VehicleDynamicsSaver:
     def __init__(self, output_file) -> None:
         self.frames = []
         self.frame_count = 0
-        self.output_file = '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/Determinism/' + datetime.now().strftime("%Y%m%d_%H%M%S_") + output_file + '.csv'
+        self.output_file = '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/' + datetime.now().strftime("%Y%m%d_%H%M%S_") + output_file + '.csv'
 
     def record_data(self, data):
         data['current_time'] = round(time.time(), 4)
@@ -315,6 +315,15 @@ class SensorManager:
     def destroy(self):
         self.sensor.destroy()
 
+def visual_spawn_points(spawn_points, world):
+    # 调试标记生成
+    for idx, trans in enumerate(spawn_points):
+        world.debug.draw_string(
+            trans.location, 
+            f"Spawn-{idx}", 
+            life_time=10,
+            color=carla.Color(255,0,0))
+
 def run_simulation(args, client):
     """This function performed one test run using the args parameters
     and connecting to the carla client passed.
@@ -326,11 +335,14 @@ def run_simulation(args, client):
     timer = CustomTimer()
     Utimer = UtilityTimer()
     cnt_tick = 0
+    town = 'Town03'
 
     try:
 
         # Getting the world and
         world = client.get_world()
+        if world.get_map().name.split("/")[-1] != town:
+            world = client.load_world(town, reset_settings=True)
         original_settings = world.get_settings()
 
         if args.sync:
@@ -346,7 +358,13 @@ def run_simulation(args, client):
 
         # Instanciating the vehicle to which we attached the sensors
         bp = world.get_blueprint_library().filter('charger_2020')[0]
-        vehicle = world.spawn_actor(bp, world.get_map().get_spawn_points()[-1])
+        # waypoint = world.get_map().get_waypoint(carla.Location(x=110.0, y=-125.3), project_to_road=True).transform
+        # waypoint.location.z += 1.5
+        waypoint = world.get_map().get_spawn_points()[129]
+        print(waypoint)
+        vehicle = world.spawn_actor(bp, waypoint)
+        visual_spawn_points(world.get_map().get_spawn_points(), world)
+
         vehicle_list.append(vehicle)
         vehicle.set_autopilot(True)
 
@@ -380,9 +398,9 @@ def run_simulation(args, client):
         #Simulation loop
         call_exit = False
         time_init_sim = timer.time()
-        end_tick = 300
+        end_tick = 100
         skip_num = 0
-        skip_step = 0
+        skip_step = 2
         VEHICLE_CONFIG_PATH = 'config/myTotalVehicles.txt'
         NUM_VEHICLES = read_vehicle_count(VEHICLE_CONFIG_PATH)
         print(f"本次仿真将生成 {NUM_VEHICLES+1} 辆车辆 (NPCs+EGO)")

@@ -1,0 +1,72 @@
+netstat -nlp|grep 2000
+
+ps aux | grep UE4Editor
+
+kill -9 
+
+# how_collect_Determinism_data
+
+docker run --privileged   -e SDL_AUDIODRIVER=dummy   -e DISPLAY=$DISPLAY   -v /tmp/.X11-unix:/tmp/.X11-unix   --net=host   --runtime=nvidia   -e NVIDIA_VISIBLE_DEVICES=0   carlasim/carla:0.9.14   /bin/bash ./CarlaUE4.sh -carla-rpc-port=2000
+
+watch -n 10 python3 visualize_multiple_sensors_how_collect_Determinism_data.py
+
+
+
+
+
+
+    skip_step = 2
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_174118_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_174225_VehicleDynamics.csv'
+    ]
+
+    skip_step = 3
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175044_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175248_VehicleDynamics.csv'
+    ]
+
+    skip_step = 4
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175404_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175436_VehicleDynamics.csv'
+    ]
+
+    skip_step = 5
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175708_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175726_VehicleDynamics.csv'
+    ]
+
+    skip_step = 10
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175926_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175939_VehicleDynamics.csv'
+    ]
+
+    skip_step = 15
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180117_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180135_VehicleDynamics.csv'
+    ]
+
+    skip_step = 20
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180335_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180346_VehicleDynamics.csv'
+    ]
+
+    skip_step = 25
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180408_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180429_VehicleDynamics.csv'
+    ]
+
+    skip_step = 30
+    csv_files_skip_30 = [
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180447_VehicleDynamics.csv',
+        '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180459_VehicleDynamics.csv'
+    ]
+
+    
