@@ -12,12 +12,14 @@
 #include "Carla/Actor/ActorBlueprintFunctionLibrary.h"
 #include "Carla/Game/CarlaStatics.h"
 
-// jxy: V2 mode — CVar disabled. Sensor rendering skip via destroy/re-create.
-// static TAutoConsoleVariable<bool> CVarSnapshotActive(
-//     TEXT("carla.SnapshotActive"),
-//     false,
-//     TEXT("When true, skip all sensor rendering during snapshot window."),
-//     ECVF_Default);
+// jxy: Console variable toggled by PhysScene at snapshot boundaries.
+// When true, all ASensor::Tick calls return early, skipping PrePhysTick,
+// PostPhysTick, and all downstream scene capture / data streaming.
+static TAutoConsoleVariable<bool> CVarSnapshotActive(
+    TEXT("carla.SnapshotActive"),
+    false,
+    TEXT("When true, skip all sensor rendering during snapshot window."),
+    ECVF_Default);
 
 ASensor::ASensor(const FObjectInitializer &ObjectInitializer)
   : Super(ObjectInitializer)
@@ -53,11 +55,11 @@ void ASensor::Tick(const float DeltaTime)
   TRACE_CPUPROFILER_EVENT_SCOPE(ASensor::Tick);
   Super::Tick(DeltaTime);
 
-  // jxy: V2 mode — CVar disabled.
-  // if (CVarSnapshotActive.GetValueOnGameThread())
-  // {
-  //   return;
-  // }
+  // jxy: Skip all sensor rendering during snapshot window.
+  if (CVarSnapshotActive.GetValueOnGameThread())
+  {
+    return;
+  }
   // jxy end
 
   if (bClientsListening)
