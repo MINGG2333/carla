@@ -12,6 +12,13 @@
 #include "Carla/Actor/ActorBlueprintFunctionLibrary.h"
 #include "Carla/Game/CarlaStatics.h"
 
+// jxy: V2 mode — CVar disabled. Sensor rendering skip via destroy/re-create.
+// static TAutoConsoleVariable<bool> CVarSnapshotActive(
+//     TEXT("carla.SnapshotActive"),
+//     false,
+//     TEXT("When true, skip all sensor rendering during snapshot window."),
+//     ECVF_Default);
+
 ASensor::ASensor(const FObjectInitializer &ObjectInitializer)
   : Super(ObjectInitializer)
 {
@@ -25,8 +32,8 @@ ASensor::ASensor(const FObjectInitializer &ObjectInitializer)
 void ASensor::BeginPlay()
 {
   Super::BeginPlay();
-  UCarlaEpisode* Episode = UCarlaStatics::GetCurrentEpisode(GetWorld());
-  FSensorManager& SensorManager = Episode->GetSensorManager();
+  UCarlaEpisode* CurEpisode = UCarlaStatics::GetCurrentEpisode(GetWorld());
+  FSensorManager& SensorManager = CurEpisode->GetSensorManager();
   SensorManager.RegisterSensor(this);
 }
 
@@ -45,6 +52,14 @@ void ASensor::Tick(const float DeltaTime)
 {
   TRACE_CPUPROFILER_EVENT_SCOPE(ASensor::Tick);
   Super::Tick(DeltaTime);
+
+  // jxy: V2 mode — CVar disabled.
+  // if (CVarSnapshotActive.GetValueOnGameThread())
+  // {
+  //   return;
+  // }
+  // jxy end
+
   if (bClientsListening)
   {
     if(!Stream.AreClientsListening())
@@ -107,10 +122,10 @@ void ASensor::EndPlay(EEndPlayReason::Type EndPlayReason)
 
   Stream = FDataStream();
 
-  UCarlaEpisode* Episode = UCarlaStatics::GetCurrentEpisode(GetWorld());
-  if(Episode)
+  UCarlaEpisode* CurEpisode = UCarlaStatics::GetCurrentEpisode(GetWorld());
+  if(CurEpisode)
   {
-    FSensorManager& SensorManager = Episode->GetSensorManager();
+    FSensorManager& SensorManager = CurEpisode->GetSensorManager();
     SensorManager.DeRegisterSensor(this);
   }
 }
