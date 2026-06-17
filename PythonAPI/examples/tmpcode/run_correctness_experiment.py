@@ -31,7 +31,9 @@ from datetime import datetime
 # ============================================================
 # Paths
 # ============================================================
-CARLA_EXAMPLES_DIR = "/S980PRO/xinyu/Documents/carla/PythonAPI/examples"
+CARLA_EXAMPLES_DIR = os.environ.get(
+    "CARLA_EXAMPLES_DIR",
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIR = os.path.join(CARLA_EXAMPLES_DIR, "data")
 CONFIG_DIR = os.path.join(CARLA_EXAMPLES_DIR, "config")
 EXPERIMENT_DIR = os.path.join(DATA_DIR, "correctness_experiment")

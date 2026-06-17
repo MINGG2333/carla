@@ -27,7 +27,10 @@ from datetime import datetime
 # ============================================================
 # Configuration
 # ============================================================
-DATA_DIR = "/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data"
+CARLA_EXAMPLES_DIR = os.environ.get(
+    "CARLA_EXAMPLES_DIR",
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DATA_DIR = os.path.join(CARLA_EXAMPLES_DIR, "data")
 EXPERIMENT_DIR = os.path.join(DATA_DIR, "correctness_experiment")
 
 # Expected snapshot window
