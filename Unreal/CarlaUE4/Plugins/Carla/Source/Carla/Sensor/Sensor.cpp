@@ -12,7 +12,7 @@
 #include "Carla/Actor/ActorBlueprintFunctionLibrary.h"
 #include "Carla/Game/CarlaStatics.h"
 
-// jxy: Console variable toggled by PhysScene at snapshot boundaries.
+// ase: Console variable toggled by PhysScene at snapshot boundaries.
 // When true, all ASensor::Tick calls return early, skipping PrePhysTick,
 // PostPhysTick, and all downstream scene capture / data streaming.
 static TAutoConsoleVariable<bool> CVarSnapshotActive(
@@ -55,12 +55,12 @@ void ASensor::Tick(const float DeltaTime)
   TRACE_CPUPROFILER_EVENT_SCOPE(ASensor::Tick);
   Super::Tick(DeltaTime);
 
-  // jxy: Skip all sensor rendering during snapshot window.
+  // ase: Skip all sensor rendering during snapshot window.
   if (CVarSnapshotActive.GetValueOnGameThread())
   {
     return;
   }
-  // jxy end
+  // ase end
 
   if (bClientsListening)
   {

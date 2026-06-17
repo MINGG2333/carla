@@ -496,7 +496,7 @@ def main():
         if not new_uwheel:
             print("[FATAL] No UWheeledVehicle4W CSVs generated!")
             print("The C++ VehicleDynamicsSaver may not be saving files.")
-            print("Check UE4 Editor output log for 'jxy:' messages.")
+            print("Check UE4 Editor output log for 'ase:' messages.")
             return 1
 
         for f in new_uwheel:

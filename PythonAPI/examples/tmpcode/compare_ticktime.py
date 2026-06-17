@@ -1,23 +1,29 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import os
+
+EXAMPLES_DIR = os.environ.get(
+    'CARLA_ASE_EXAMPLES_DIR',
+    os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+DATA_DIR = os.path.join(EXAMPLES_DIR, 'data')
 
 # 假设你有一个包含CSV文件路径的列表
 csv_files = [
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_152138_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_152704_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_152858_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_153003_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_174140_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_174257_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_174928_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175130_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175319_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175458_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_175803_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180003_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180205_VehicleDynamics.csv',
-    '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/20250105_180518_VehicleDynamics.csv'
+    os.path.join(DATA_DIR, '20250105_152138_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_152704_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_152858_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_153003_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_174140_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_174257_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_174928_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_175130_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_175319_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_175458_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_175803_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_180003_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_180205_VehicleDynamics.csv'),
+    os.path.join(DATA_DIR, '20250105_180518_VehicleDynamics.csv')
 
 ]
 

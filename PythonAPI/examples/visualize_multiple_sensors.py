@@ -74,7 +74,10 @@ class VehicleDynamicsSaver:
     def __init__(self, output_file) -> None:
         self.frames = []
         self.frame_count = 0
-        self.output_file = '/S980PRO/xinyu/Documents/carla/PythonAPI/examples/data/Determinism/' + datetime.now().strftime("%Y%m%d_%H%M%S_") + output_file + '.csv'
+        examples_dir = os.environ.get('CARLA_ASE_EXAMPLES_DIR', os.path.dirname(os.path.abspath(__file__)))
+        output_dir = os.path.join(examples_dir, 'data', 'Determinism')
+        os.makedirs(output_dir, exist_ok=True)
+        self.output_file = os.path.join(output_dir, datetime.now().strftime("%Y%m%d_%H%M%S_") + output_file + '.csv')
 
     def record_data(self, data):
         data['current_time'] = round(time.time(), 4)

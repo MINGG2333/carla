@@ -161,7 +161,7 @@ void ACarlaWheeledVehicle::BeginPlay()
 
   if (MovementComponent)
   {
-    UE_LOG(LogCarla, Log, TEXT("jxy: MovementComponent in BeginPlay'%d' "), 1);
+    UE_LOG(LogCarla, Log, TEXT("ase: MovementComponent in BeginPlay'%d' "), 1);
 
     check(MovementComponent != nullptr);
 
@@ -328,12 +328,12 @@ void ACarlaWheeledVehicle::FlushVehicleControl()
 
 	if (GetWorld()->IsServer()) // True
   {
-    UE_LOG(LogCarla, Log, TEXT("jxy: FlushVehicleControl on server '%d' "), 330);
+    UE_LOG(LogCarla, Log, TEXT("ase: FlushVehicleControl on server '%d' "), 330);
       // 物理计算逻辑
   }
 	else
 	{
-    UE_LOG(LogCarla, Log, TEXT("jxy: FlushVehicleControl on client '%d' "), 330);
+    UE_LOG(LogCarla, Log, TEXT("ase: FlushVehicleControl on client '%d' "), 330);
 	}
   BaseMovementComponent->ProcessControl(InputControl.Control);
   InputControl.Control.bReverse = InputControl.Control.Gear < 0;

@@ -48,5 +48,11 @@ function move_if_changed {
 
 CARLA_BUILD_CONCURRENCY=`nproc --all`
 
-source /home/mingg/miniconda3/etc/profile.d/conda.sh
-conda activate carla14
+if [ -n "${CARLA_CONDA_ENV:-}" ]; then
+  if ! command -v conda >/dev/null 2>&1; then
+    fatal_error "CARLA_CONDA_ENV is set, but conda is not available in PATH."
+  fi
+  CONDA_BASE="$(conda info --base)"
+  source "${CONDA_BASE}/etc/profile.d/conda.sh"
+  conda activate "${CARLA_CONDA_ENV}"
+fi
